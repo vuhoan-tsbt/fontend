@@ -1,0 +1,393 @@
+.loading {
+    background: rgba(0, 0, 0, .5);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.spinner-center {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}
+
+.form-check-input:checked {
+    background-color: red;
+    border-color: pink;
+}
+
+.form-switch .form-check-input {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='red'/%3e%3c/svg%3e");
+}
+
+.form-switch .form-check-input:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='pink'/%3e%3c/svg%3e");
+}
+
+/* test */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
+:root {
+    --header-height: 3rem;
+    --nav-width: 68px;
+    --first-color: #000000;
+    --first-color-light: #AFA5D9;
+    /* --white-color: #F7F6FB; */
+    --body-font: 'Nunito', sans-serif;
+    --normal-font-size: 1rem;
+    --z-fixed: 100
+}
+
+.product-menu {
+    transform: rotate(90deg);
+    transition: 0.3s;
+}
+
+#product-icon {
+    transition: 0.3s;
+}
+
+*,
+::before,
+::after {
+    box-sizing: border-box
+}
+
+body {
+    position: relative;
+    margin: var(--header-height) 0 0 0;
+    padding: 0 1rem;
+    font-family: var(--body-font);
+    font-size: var(--normal-font-size);
+    transition: .5s
+}
+
+a {
+    text-decoration: none
+}
+
+#product {
+    width: 100%;
+}
+
+#product-list {
+    width: 100%;
+}
+
+#product-crud {
+    width: 100%;
+}
+
+#product-option {
+    width: 100%;
+}
+
+#product-option-list {
+    width: 100%;
+}
+
+#product-option-crud {
+    width: 100%;
+}
+
+#product-variant {
+    width: 100%;
+}
+
+#myTab {
+    height: 45px;
+    display: flex;
+    flex-direction: inherit;
+    justify-content: unset;
+    overflow: hidden;
+}
+
+.header {
+    width: 100%;
+    height: var(--header-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    background-color: #9a9a9a;
+    z-index: var(--z-fixed);
+    transition: .5s
+}
+
+.header_toggle {
+    color: var(--first-color);
+    font-size: 1.5rem;
+    cursor: pointer
+}
+
+.close_toggle {
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    float: right;
+}
+
+.header_img {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden
+}
+
+.header_img img {
+    width: 40px
+}
+
+.l-navbar {
+    position: fixed;
+    top: 0;
+    left: -30%;
+    width: var(--nav-width);
+    height: 100vh;
+    background-color: var(--first-color);
+    padding: .5rem 1rem 0 0;
+    transition: .5s;
+    z-index: var(--z-fixed);
+    color: white;
+}
+
+.nav {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden
+}
+
+.nav_logo,
+.nav_link {
+    /* display: grid; */
+    grid-template-columns: max-content max-content;
+    align-items: center;
+    column-gap: 1rem;
+    padding: .5rem 0 .5rem 1.5rem
+}
+
+.nav_logo {
+    margin-bottom: 2rem;
+    margin-left: 10px;
+    display: block;
+}
+
+.nav_logo-icon {
+    font-size: 1.25rem;
+    color: var(--white-color)
+}
+
+.nav_logo-name {
+    color: white;
+    font-weight: 700
+}
+
+.nav_link {
+    position: relative;
+    color: #939393;
+    margin-bottom: 1.5rem;
+    transition: .3s
+}
+
+.sub_nav_link {
+    position: relative;
+    color: #939393;
+    margin-bottom: 1.5rem;
+    transition: .3s
+}
+
+.product-nav-item {
+    color: #619eff;
+}
+
+.product-nav-item:hover {
+    color: white;
+}
+
+.nav_link:hover {
+    color: var(--white-color)
+}
+
+.nav_icon {
+    font-size: 1.25rem
+}
+
+.showNav {
+    left: 0;
+    width: calc(var(--nav-width) + 156px);
+}
+
+
+.body-pd {
+    /* padding-left: calc(var(--nav-width) + 1rem) */
+}
+
+.active {
+    color: var(--white-color)
+}
+
+/* .header-after-click {
+    padding-left: 250px;
+} */
+.active::before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    width: 2px;
+    height: 32px;
+    background-color: white
+}
+
+.bx {
+    color: white;
+}
+
+.logo-reponsive {
+    display: block;
+    position: fixed;
+    right: 0px;
+}
+
+.height-100 {
+    height: 100vh
+}
+
+#close-toggle {
+    color: white;
+}
+
+@media screen and (min-width: 821px) {
+    body {
+        margin: calc(var(--header-height) + 1rem) 0 0 0;
+        padding-left: calc(var(--nav-width) + 2rem)
+    }
+
+    .active::before {
+        content: '';
+        position: absolute;
+        left: 0px;
+        top: 5px;
+        margin-left: 12px;
+        width: 3px;
+        height: 35px;
+        background-color: white
+    }
+
+    .header {
+        height: calc(var(--header-height) + 1rem);
+        /* padding: 0 2rem 0 calc(var(--nav-width) + 2rem); */
+
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #ffffff;
+        z-index: var(--z-fixed);
+        transition: .5s
+    }
+
+    .logo-reponsive {
+        display: none;
+    }
+
+    .header_img {
+        width: 40px;
+        height: 40px
+    }
+
+    .header_img img {
+        width: 45px
+    }
+
+    .l-navbar {
+        /* left: 0; */
+        padding: 1rem 1rem 0 0
+    }
+
+    .showNav {
+        width: calc(var(--nav-width) + 156px);
+    }
+
+    .bx {
+        color: rgb(0, 0, 0);
+    }
+
+    .body-pd {
+        padding-left: calc(var(--nav-width) + 85px)
+    }
+}
+
+.collapse-optionValue {
+    width: 100%;
+}
+
+.card {
+    border: 0px;
+}
+
+.modal-option {
+    width: 100%;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+.pro {
+    z-index: 0;
+    position: absolute;
+}
+
+.proVal:hover {
+    background-color: rgb(255, 255, 217);
+}
+
+.tab {
+    z-index: 1;
+
+}
+
+.xBackground {
+    background-color: rgb(218, 215, 215);
+}
+
+.xBackground:hover {
+    background-color: rgb(252, 206, 206);
+}
+
+a.linkpage.active {
+    color: red;
+}
+
+
+/* .tab-list-status-bill li button {
+    font-weight: bold;
+} */
+
+.tab-list-status-bill .nav-item .nav-link {
+
+    color: #000;
+}
+
+.tab-list-status-bill .nav-item .nav-link.active {
+    color: #FFF;
+    background-color: #000;
+}
+

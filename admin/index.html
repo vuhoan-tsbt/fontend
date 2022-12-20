@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap-icons-1.7.2/bootstrap-icons-1.7.2/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="../css/fontawesome-free-6.0.0-web/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../css/styleAdmin.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'>
+</head>
+
+<body>
+    <section class="full">
+        <div class="row">
+            <div class="menu col-2 col-sm-2 col-md-2 col-lg-3" style="padding-bottom: 50px;">
+                <div class="sidebar d-none d-lg-block">
+                    <a href="#home"><i class="bi bi-house-fill"></i> Home</a>
+                    <a href="#services"><i class="bi bi-tools"></i> Services</a>
+                    <a href="#clients"><i class="bi bi-person-fill"></i></i> Clients</a>
+                    <a href="#contact"><i class="bi bi-envelope-fill"></i> Contact</a>
+                </div>
+
+                <div class="sidebar2 d-lg-none">
+
+                    <button class="btn btn-tab" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                        <i class="bi bi-grid-3x3-gap-fill"></i>
+                    </button>
+
+                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+                        aria-labelledby="offcanvasExampleLabel">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <div>
+                                Some text as placeholder. In real life you can have the elements you have chosen.
+                                Like,
+                                text, images, lists, etc.
+                            </div>
+                            <div class="dropdown mt-3">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Dropdown
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <li><button class="dropdown-item" type="button">Action</button></li>
+                                    <li><button class="dropdown-item" type="button">Another action</button></li>
+                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="quanly col-10 col-sm-10 col-md-10 col-lg-9 row">
+                <div class="row container mt-3">
+                    <div class="col-12 col-sm-6 row rounded hangthang mt-2 ">
+                        <div class="tieude-hangthang fw-bold mt-2">
+                            <p style="font-size: 13px;">Doanh thu hàng tháng <i class="ms-2 bi bi-currency-dollar"></i>
+                            </p>
+                            <p class="giathang">40,000,000 <span>đ</span></p>
+                        </div>
+                        <hr>
+                        <div class="dieuhuong1 mb-2">
+                            <a href="">Chi tiết</a>
+                            <i class="bi bi-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 row rounded hangnam mt-2 ">
+                        <div class="tieude-hangnam fw-bold mt-2">
+                            <p style="font-size: 13px;">Doanh thu hàng năm <i class="ms-2 bi bi-gem"></i></p>
+                            <p class="gianam">800,000,000 <span>đ</span></p>
+                        </div>
+                        <hr>
+                        <div class="dieuhuong2 mb-2">
+                            <a href="">Chi tiết</a>
+                            <i class="bi bi-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 row rounded donhoanthanh mt-2 ">
+                        <div class="tieude-hoanthanh fw-bold mt-2">
+                            <p style="font-size: 13px;">Đơn đã hoàn thành <i class="ms-2 bi bi-clipboard-check"></i></p>
+                            <p class="sodonht">160</p>
+                        </div>
+                        <hr>
+                        <div class="dieuhuong3 mb-2">
+                            <a href="">Chi tiết</a>
+                            <i class="bi bi-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 row rounded dondangxuly mt-2 ">
+                        <div class="tieude-xl fw-bold mt-2">
+                            <p style="font-size: 13px;">Đơn đang xử lý <i class="ms-2 bi bi-hourglass-split"></i></p>
+                            <p class="sodonxl">80</p>
+                        </div>
+                        <hr>
+                        <div class="dieuhuong4 mb-2">
+                            <a href="">Chi tiết</a>
+                            <i class="bi bi-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row container mt-3"></div>
+
+                <!-- <div class="row"> -->
+                <!-- <div class="doanhthu container row">
+                    <div class="col-12 col-lg-6 col-xxl-3 rounded hangthang">
+                        <div class="tieude-hangthang col-md-10">
+                            <p style="font-size: 13px;">Doanh thu hàng tháng</p>
+                            <p class="giathang">40,000,000 <span>đ</span></p>
+                        </div>
+                        <div class="anhlogo col-md-2">
+                            <i class="bi bi-currency-dollar"></i>
+                        </div>
+                        <hr>
+                        <div class="dieuhuong1">
+                            <a href="">Chi tiết</a>
+                            <i class="bi bi-chevron-right" style="margin-left: 95px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 col-xxl-3 rounded hangnam">
+                        <div class="tieude-hangnam col-md-10">
+                            <p style="font-size: 13px;">Doanh thu hàng năm</p>
+                            <p class="gianam">800,000,000 <span>đ</span></p>
+                        </div>
+                        <div class="anhlogo col-md-2">
+                            <i class="bi bi-gem"></i>
+                        </div>
+
+                        <hr>
+                        <div class="dieuhuong2">
+                            <a href="">Chi tiết</a>
+                            <i class="bi bi-chevron-right" style="margin-left: 95px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 col-xxl-3 rounded donhoanthanh">
+                        <div class="tieude-hoanthanh col-md-10">
+                            <p style="font-size: 13px;">Đơn đã hoàn thành</p>
+                            <p class="sodonht">160</p>
+                        </div>
+                        <div class="anhlogo col-md-2">
+                            <i class="bi bi-clipboard-check"></i>
+                        </div>
+                        <hr>
+                        <div class="dieuhuong3">
+                            <a href="">Chi tiết</a>
+                            <i class="bi bi-chevron-right" style="margin-left: 95px;"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 col-xxl-3 rounded dondangxuly">
+                        <div class="tieude-xl col-md-10">
+                            <p style="font-size: 13px;">Đơn đang xử lý</p>
+                            <p class="sodonxl">80</p>
+                        </div>
+
+                        <div class="anhlogo col-md-2">
+                            <i class="bi bi-hourglass-split"></i>
+                        </div>
+                        <hr>
+                        <div class="dieuhuong4">
+                            <a href="">Chi tiết</a>
+                            <i class="bi bi-chevron-right " style="margin-left: 95px;"></i>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="hangthang col-12 col-lg-3 row">
+                            <div class="tieude-hangthang col-md-10">
+                                <p style="font-size: 13px;">Doanh thu hàng tháng</p>
+                                <p class="giathang">40,000,000 <span>đ</span></p>
+                            </div>
+                            <div class="anhlogo col-md-2">
+                                <i class="bi bi-currency-dollar"></i>
+                            </div>
+                            <hr>
+                            <div class="dieuhuong1">
+                                <a href="">Chi tiết</a>
+                                <i class="bi bi-chevron-right" style="margin-left: 95px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="hangnam col-12 col-lg-3 row">
+                            <div class="tieude-hangnam col-md-10">
+                                <p style="font-size: 13px;">Doanh thu hàng năm</p>
+                                <p class="gianam">800,000,000 <span>đ</span></p>
+                            </div>
+                            <div class="anhlogo col-md-2">
+                                <i class="bi bi-gem"></i>
+                            </div>
+
+                            <hr>
+                            <div class="dieuhuong2">
+                                <a href="">Chi tiết</a>
+                                <i class="bi bi-chevron-right" style="margin-left: 95px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="donhoanthanh col-lg-3 row">
+                            <div class="tieude-hoanthanh col-md-10">
+                                <p style="font-size: 13px;">Đơn đã hoàn thành</p>
+                                <p class="sodonht">160</p>
+                            </div>
+                            <div class="anhlogo col-md-2">
+                                <i class="bi bi-clipboard-check"></i>
+                            </div>
+                            <hr>
+                            <div class="dieuhuong3">
+                                <a href="">Chi tiết</a>
+                                <i class="bi bi-chevron-right" style="margin-left: 95px;"></i>
+                            </div>
+                        </div>
+
+                        <div class="dondangxuly col-lg-3 row">
+                            <div class="tieude-xl col-md-10">
+                                <p style="font-size: 13px;">Đơn đang xử lý</p>
+                                <p class="sodonxl">80</p>
+                            </div>
+
+                            <div class="anhlogo col-md-2">
+                                <i class="bi bi-hourglass-split"></i>
+                            </div>
+                            <hr>
+                            <div class="dieuhuong4">
+                                <a href="">Chi tiết</a>
+                                <i class="bi bi-chevron-right " style="margin-left: 95px;"></i>
+                            </div>
+                        </div> -->
+
+                <!-- </div> -->
+                <div class="mb-5 row container">
+                    <!-- <div class="bieudo row container"> -->
+
+
+                    <div class="col-xl-6 row bg-light mt-3 rounded">
+                        <h5 class="card-title bg-light">Doanh thu</h5>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    <div class="col-xl-6 row bg-light mt-3 rounded">
+                        <h5 class="card-title bg-light">Doanh thu</h5>
+                        <canvas id="myChart1"></canvas>
+                    </div>
+
+                    <!-- </div> -->
+                </div>
+
+                <!-- <div class="quanlysp col-md-8 col-lg-12">
+                    <div class="card-header">Quản lý sản phẩm</div>
+                    <div class="card-body">
+                        <div class="">
+                            <div class="dataTable-top row">
+                                <div class="dataTable-dropdown  col-md-8">
+                                    <label> Hiển thị mục
+                                        <select class="dataTable-selector">
+                                            <option value="5">5</option>
+                                            <option value="10" selected="">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                            <option value="25">25</option>
+                                        </select> </label>
+                                </div>
+                                <div class="dataTable-search col-md-3">
+                                    <input class="dataTable-input" placeholder="Search..." type="text">
+                                </div>
+                            </div>
+                            <div class="container table-responsive">
+                                <table id="" class="table-light table table-bordered text-center ">
+                                    <thead>
+                                        <tr>
+                                            <th data-sortable=""><a href="#" class=" text-dark"
+                                                    style="text-decoration: none;">STT</a></th>
+                                            <th data-sortable=""><a href="#" class=" text-dark "
+                                                    style="text-decoration: none;">Tên</a></th>
+                                            <th data-sortable=""><a href="#" class=" text-dark "
+                                                    style="text-decoration: none;">Mã</a></th>
+                                            <th data-sortable=""><a href="#" class=" text-dark "
+                                                    style="text-decoration: none;">Size</a></th>
+                                            <th data-sortable=""><a href="#" class=" text-dark "
+                                                    style="text-decoration: none;">Giá</a></th>
+                                            <th data-sortable=""><a href="#" class=" text-dark "
+                                                    style="text-decoration: none;">Số
+                                                    lượng</a></th>
+                                            <th data-sortable=""><a href="#" class=" text-dark "
+                                                    style="text-decoration: none;">Trạng
+                                                    thái</a></th>
+                                            <th data-sortable=""><a href="#" class=" text-dark "
+                                                    style="text-decoration: none;">Hoạt
+                                                    động</a></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Chuck 70</td>
+                                            <td>c70</td>
+                                            <td>38</td>
+                                            <td>1,250,000</td>
+                                            <td>17</td>
+                                            <td>
+                                                <div class="badge bg-primary text-white rounded-pill">Còn hàng</div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-datatable btn-icon btn-transparent-dark me-2"><i
+                                                        class="bi bi-pencil-square"></i></button>
+                                                <button class="btn btn-datatable btn-icon btn-transparent-dark"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Cao cổ</td>
+                                            <td>cc1</td>
+                                            <td>40</td>
+                                            <td>1,800,000</td>
+                                            <td>0</td>
+                                            <td>
+                                                <div class="badge bg-danger text-white rounded-pill">Hết hàng</div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-datatable btn-icon btn-transparent-dark me-2"><i
+                                                        class="bi bi-pencil-square"></i></button>
+                                                <button class="btn btn-datatable btn-icon btn-transparent-dark"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                <div class="dataTable-bottom row">
+                                    <div class="dataTable-info col-md-8">Hiển thị 1 đến 10 trong số 20 mục</div>
+                                    <div class="paging col-md-2">
+                                        <nav aria-label="Page navigation example ">
+                                            <ul class="pagination">
+                                                <li class="page-item ">
+                                                    <a class="page-link" href="#" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#" aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> -->
+                <br>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.bundle.js"></script>
+    <script src="../js/popper.min.js"></script>
+
+
+    <script src="../js/angularjs.min.js"></script>
+    <script src="../js/angular-route.js"></script>
+
+    <script>
+        var xValues = [];
+        var yValues = [];
+        generateData("Math.sin(x)", 0, 10, 0.5);
+
+        new Chart("myChart", {
+            type: "line",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    fill: false,
+                    pointRadius: 2,
+                    borderColor: "rgba(0,0,255,0.5)",
+                    data: yValues
+                }]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: "y = x * 2 + 7",
+                    fontSize: 16
+                }
+            }
+        });
+        function generateData(value, i1, i2, step = 1) {
+            for (let x = i1; x <= i2; x += step) {
+                yValues.push(eval(value));
+                xValues.push(x);
+            }
+        }
+        ///bieudocot
+        var xValues1 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+        var yValues1 = [55, 49, 44, 24, 15, 20, 77, 88, 95, 80, 30, 45];
+        var barColors = ["#0061f2", "#0061f2", "#0061f2", "#0061f2", "#0061f2", "#0061f2", "#0061f2", "#0061f2", "#0061f2", "#0061f2", "#0061f2", "#0061f2"];
+
+        new Chart("myChart1", {
+            type: "bar",
+            data: {
+                labels: xValues1,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues1
+                }]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: "World Wine Production 2018"
+                }
+            }
+        });
+
+        var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+        var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+            return new bootstrap.Dropdown(dropdownToggleEl)
+        })
+    </script>
+
+
+</body>
+
+</html>

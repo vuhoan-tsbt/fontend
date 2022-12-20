@@ -1,0 +1,929 @@
+app.controller('order-ctrl', function ($scope, $http, $window) {
+
+    //getToken
+    $scope.authToken = sessionStorage.getItem("authToken");
+    if ($scope.authToken == null || $scope.authToken == undefined) {
+        setTimeout(() => {
+            document.location = '/admin#!/login';
+        }, 2000);
+        sweetError('Please login !');
+        return;
+    }
+
+    $scope.productVariant = {};
+    $scope.productVariantEdit = {};
+    $scope.lstProducts = [];
+    $scope.lstAddedProducts = [];
+    $scope.sellers = [];
+    $scope.customers = [];
+    $scope.messageError = {};
+
+    $scope.formBill = {};
+    $scope.bill = {};
+    $scope.bills = [];
+    $scope.billDetails = [];
+    const productVariantAPI = 'http://buiquanghieu.xyz/PRO2111_FALL2022/admin/rest/product-variants';
+    const variantValueAPI = 'http://buiquanghieu.xyz/PRO2111_FALL2022/admin/rest/variant-values';
+    const billApi = 'http://buiquanghieu.xyz/PRO2111_FALL2022/admin/rest/bills'
+    const billDetailApi = 'http://buiquanghieu.xyz/PRO2111_FALL2022/admin/rest/bill-details'
+    const userApi = 'http://buiquanghieu.xyz/PRO2111_FALL2022/admin/rest/users'
+
+
+    $scope.isLoading = true;
+    $scope.initializBill = async function () {
+        await $http.get(`${billApi}/get-bill-id`, {
+            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+        })
+            .then(resp => {
+                console.log((resp.data.billId));
+                if (resp.data != null) {
+                    $scope.formBill.billId = resp.data.billId;
+                } else {
+                    toastMessage('', 'Lỗi load mã HĐ', 'error');
+                }
+                $scope.isLoading = false;
+            })
+            .catch(error => {
+                console.log(error);
+                $scope.isLoading = false;
+            })
+    }
+
+    $scope.initializBill();
+
+    //Load seller
+    $scope.initializSeller = async function () {
+        await $http.get(`${userApi}/find-user-sale`, {
+            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+        })
+            .then(resp => {
+                console.log((resp.data));
+                $scope.sellers = resp.data;
+                $scope.isLoading = false;
+            })
+            .catch(error => {
+                console.log(error);
+                $scope.isLoading = false;
+            })
+    }
+
+    $scope.initializSeller();
+
+    //Load customer
+    $scope.initializCustomer = async function () {
+        await $http.get(`${userApi}/find-by-status-true`, {
+            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+        })
+            .then(resp => {
+                console.log((resp.data));
+                $scope.customers = resp.data;
+                $scope.isLoading = false;
+            })
+            .catch(error => {
+                console.log(error);
+                $scope.isLoading = false;
+            })
+    }
+
+    $scope.initializCustomer();
+
+
+    $scope.changeCustomer = async function (cus) {
+        // console.log(cus);
+        $scope.bill.phone = angular.copy(cus.phone);
+    }
+
+    //Get variant value
+    $scope.getLstProduct = async function () {
+
+        await $http.get(`${productVariantAPI}/get-product-variant-of-sale`, {
+            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+        })
+            .then(resp => {
+
+                $scope.lstProductVariant = resp.data;
+                $scope.pageCountProductVariant = Math.ceil($scope.lstProductVariant.length / $scope.pageSizeProductVariant);
+
+                console.log(resp.data);
+                $scope.isLoading = false;
+            })
+            .catch(error => {
+                console.log(error);
+                $scope.isLoading = false;
+            })
+
+        //GetVariantValueByProductVariant
+        await $scope.lstProductVariant.forEach(item => {
+            var customName = '';
+            $http.get(`${variantValueAPI}/find-by-product-variant/${item.variantId}`, {
+                headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+            })
+                .then(resp => {
+                    var lstData = resp.data;
+                    console.log(resp.data);
+                    var lstValueName = [];
+                    lstData.forEach(subItem => {
+                        lstValueName.push(subItem.optionValues.valueName);
+                    });
+                    customName = lstValueName.join("-");
+                    //Set name product display
+                    var nameOld = item.products.productName;
+                    item.products.productName = `${nameOld} [${customName}]`;
+                    $scope.isLoading = false;
+                })
+
+                .catch(error => {
+                    $scope.isLoading = false;
+                    console.log(error)
+                })
+        });
+    };
+
+    $scope.getLstProduct();
+
+    //open Modal Add
+    $scope.modalAdd = async function (id) {
+        $scope.messageQuantity = '';
+        $scope.isLoading = true;
+        await $http.get(`${productVariantAPI}/${id}`, {
+            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+        })
+            .then(resp => {
+
+                $scope.productVariant = resp.data;
+                $scope.maxProduct = $scope.productVariant.quantity;
+                $scope.productVariant.quantity = 1;
+                $('#exampleModalAddOrder').modal('show');
+
+                console.log(resp.data);
+                $scope.isLoading = false;
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+        //GetVariantValueByProductVariant
+        await $http.get(`${variantValueAPI}/find-by-product-variant/${$scope.productVariant.variantId}`, {
+            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+        })
+            .then(resp => {
+                var lstData = resp.data;
+                console.log(resp.data);
+                var lstValueName = [];
+                lstData.forEach(subItem => {
+                    lstValueName.push(subItem.optionValues.valueName);
+                });
+                customName = lstValueName.join("-");
+                //Set name product display
+                var nameOld = $scope.productVariant.products.productName;
+                $scope.productVariant.products.productName = `${nameOld} [${customName}]`;
+                $scope.isLoading = false;
+            })
+
+            .catch(error => {
+                $scope.isLoading = false;
+                console.log(error)
+            })
+    }
+
+    //add vào giỏ hàng
+    $scope.onAddCart = async function () {
+        $scope.isLoading = true;
+        $scope.index = -1;
+        $scope.check = 0;
+        $scope.checkPrice = 0;
+        if ($scope.lstAddedProducts.length == 0) {
+            $scope.check = 0;
+        } else {
+            $scope.lstAddedProducts.forEach(item => {
+                if (item.productVariants.variantId == $scope.productVariant.variantId) {
+                    $scope.check = 1;
+                }
+            });
+        }
+        if ($scope.check == 0) {
+            console.log($scope.productVariant.quantity == undefined);
+            if ($scope.productVariant.quantity == undefined) {
+                $scope.messageQuantity = 'Số lượng không phù hợp';
+                $scope.isLoading = false;
+                console.log('0');
+            } else {
+                // $scope.lstAddedProducts[$scope.lstAddedProducts.length] = $scope.productVariant;
+
+                console.log('1');
+                await $http.get(`${productVariantAPI}/${$scope.productVariant.variantId}`, {
+                    headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+                })
+                    .then(resp => {
+
+                        $http.get(`${variantValueAPI}/find-by-product-variant/${resp.data.variantId}`, {
+                            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+                        })
+                            .then(resp1 => {
+                                var lstData = resp1.data;
+                                console.log(resp1.data);
+                                var lstValueName = [];
+                                lstData.forEach(subItem => {
+                                    lstValueName.push(subItem.optionValues.valueName);
+                                });
+                                customName = lstValueName.join("-");
+                                //Set name product display
+                                var nameOld = resp.data.products.productName;
+                                resp.data.products.productName = `${nameOld} [${customName}]`;
+
+
+                                $scope.lstAddedProducts[$scope.lstAddedProducts.length] = {
+                                    productVariants: resp.data,
+                                    quantity: $scope.productVariant.quantity,
+                                    price: $scope.productVariant.price,
+                                    totalMoney: $scope.productVariant.quantity * $scope.productVariant.price
+                                }
+                                $scope.isLoading = false;
+                            })
+
+                            .catch(error => {
+                                $scope.isLoading = false;
+                                console.log(error)
+                            })
+
+
+
+                        $scope.isLoading = false;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+
+                $scope.isLoading = false;
+                $scope.messageError = {};
+                $scope.messageBillDetails = '';
+                toastMessage('', 'Thêm thành công !', 'success');
+                $('#exampleModalAddOrder').modal('hide');
+            }
+        }
+        else {
+            // $scope.index = $scope.lstAddedProducts.findIndex(p => p.variantId === $scope.productVariant.variantId);
+            // $scope.oldQuantity = $scope.lstAddedProducts[$scope.index].quantity;
+            $scope.oldQuantity = 0;
+            $scope.oldQuantityOfPrice = 0;
+
+            $scope.lstAddedProducts.forEach(p => {
+                if (p.productVariants.variantId == $scope.productVariant.variantId) {
+                    $scope.oldQuantity += p.quantity;
+                    if (p.price == $scope.productVariant.price) {
+                        $scope.checkPrice = 1;
+                        $scope.index = $scope.lstAddedProducts.findIndex(c => c.productVariants.variantId === $scope.productVariant.variantId && c.price === $scope.productVariant.price);
+                    }
+                }
+
+            });
+
+            if ($scope.checkPrice == 0) {
+                if ($scope.productVariant.quantity == undefined || $scope.oldQuantity + $scope.productVariant.quantity > $scope.maxProduct) {
+                    $scope.messageQuantity = 'Số lượng không phù hợp';
+                    $scope.isLoading = false;
+                } else {
+                    console.log('2');
+                    // $scope.lstAddedProducts[$scope.lstAddedProducts.length] = $scope.productVariant;
+                    await $http.get(`${productVariantAPI}/${$scope.productVariant.variantId}`, {
+                        headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+                    })
+                        .then(resp => {
+                            $http.get(`${variantValueAPI}/find-by-product-variant/${resp.data.variantId}`, {
+                                headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+                            })
+                                .then(resp1 => {
+                                    var lstData = resp1.data;
+                                    console.log(resp1.data);
+                                    var lstValueName = [];
+                                    lstData.forEach(subItem => {
+                                        lstValueName.push(subItem.optionValues.valueName);
+                                    });
+                                    customName = lstValueName.join("-");
+                                    //Set name product display
+                                    var nameOld = resp.data.products.productName;
+                                    resp.data.products.productName = `${nameOld} [${customName}]`;
+
+
+                                    $scope.lstAddedProducts[$scope.lstAddedProducts.length] = {
+                                        productVariants: resp.data,
+                                        quantity: $scope.productVariant.quantity,
+                                        price: $scope.productVariant.price,
+                                        totalMoney: $scope.productVariant.quantity * $scope.productVariant.price
+                                    }
+                                    $scope.isLoading = false;
+                                })
+
+                                .catch(error => {
+                                    $scope.isLoading = false;
+                                    console.log(error)
+                                })
+
+                            $scope.isLoading = false;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+
+                    $scope.isLoading = false;
+                    toastMessage('', 'Thêm thành công !', 'success');
+                    $scope.messageError = {};
+                    $scope.messageBillDetails = '';
+                    $('#exampleModalAddOrder').modal('hide');
+                }
+            } else {
+                if ($scope.productVariant.quantity == undefined || $scope.oldQuantity + $scope.productVariant.quantity > $scope.maxProduct) {
+                    $scope.messageQuantity = 'Số lượng không phù hợp';
+                    $scope.isLoading = false;
+                } else {
+                    console.log('3');
+                    $scope.lstAddedProducts[$scope.index].quantity = $scope.lstAddedProducts[$scope.index].quantity + $scope.productVariant.quantity;
+                    $scope.lstAddedProducts[$scope.index].totalMoney = $scope.lstAddedProducts[$scope.index].quantity * $scope.lstAddedProducts[$scope.index].price;
+                    $scope.isLoading = false;
+                    $scope.messageError = {};
+                    $scope.messageBillDetails = '';
+                    toastMessage('', 'Thêm thành công !', 'success');
+                    $('#exampleModalAddOrder').modal('hide');
+                }
+            }
+
+
+
+            // if ($scope.productVariant.quantity == undefined || $scope.oldQuantity + $scope.productVariant.quantity > $scope.maxProduct) {
+            //     $scope.messageQuantity = 'Số lượng không phù hợp';
+            //     $scope.isLoading = false;
+            // } else {
+            //     if ($scope.lstAddedProducts[$scope.index].price != $scope.productVariant.price) {
+            //         $scope.lstAddedProducts[$scope.lstAddedProducts.length] = $scope.productVariant;
+            //         $scope.isLoading = false;
+            //         toastMessage('', 'Thêm thành công !', 'success');
+            //         $('#exampleModalAddOrder').modal('hide');
+            //     } else {
+            //         $scope.lstAddedProducts[$scope.index].quantity = $scope.oldQuantity + $scope.productVariant.quantity;
+            //         $scope.isLoading = false;
+            //         toastMessage('', 'Thêm thành công !', 'success');
+            //         $('#exampleModalAddOrder').modal('hide');
+            //     }
+            // }
+        }
+    }
+
+    //open edit cart
+    $scope.modalEditCart = function (index) {
+        $scope.index = index;
+        $scope.checkPrice = 0;
+        $scope.messageQuantity = '';
+        $scope.productVariantEdit = angular.copy($scope.lstAddedProducts[$scope.index]);
+        console.log($scope.productVariantEdit.productVariants.variantId);
+        $http.get(`${productVariantAPI}/${$scope.lstAddedProducts[index].productVariants.variantId}`, {
+            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+        })
+            .then(resp => {
+
+                // $scope.productVariantEdit = resp.data;
+                $scope.maxProduct = resp.data.quantity;
+
+                console.log(resp.data);
+                $scope.isLoading = false;
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+        $('#exampleModalEditCart').modal('show');
+    }
+
+    //onEdit Cart
+    $scope.onEditCart = function () {
+        $scope.check = 0;
+        if ($scope.productVariantEdit.quantity == undefined) {
+            $scope.messageQuantity = 'Số lượng không phù hợp';
+            $scope.check = 1;
+        }
+
+        $scope.oldQuantity = 0;
+        $scope.ind = 0;
+        $scope.lstAddedProducts.forEach(p => {
+            if (p.productVariants.variantId == $scope.productVariantEdit.productVariants.variantId) {
+                if ($scope.index != $scope.ind) {
+                    $scope.oldQuantity += p.quantity;
+                    // if (p.price == $scope.productVariant.price) {
+                    //     $scope.checkPrice = 1;
+                    //     $scope.index = $scope.lstAddedProducts.findIndex(c => c.productVariants.variantId === $scope.productVariant.variantId && c.price === $scope.productVariant.price);
+                    // }
+                }
+                $scope.ind++;
+                console.log($scope.ind);
+            }
+
+        });
+        console.log($scope.index);
+
+
+        // if($scope.lstAddedProducts[$scope.index].productVariants.variantId == $scope.productVariantEdit.productVariants.variantId){
+        if ($scope.lstAddedProducts[$scope.index].price == $scope.productVariantEdit.price) {
+            $scope.lstAddedProducts[$scope.index].quantity = $scope.productVariantEdit.quantity;
+            toastMessage('', 'Cập nhật thành công !', 'success');
+            $('#exampleModalEditCart').modal('hide');
+        } else {
+            $scope.lstAddedProducts.forEach(p => {
+                if (p.price == $scope.productVariantEdit.price) {
+                    $scope.checkPrice = 1;
+                }
+            })
+            if ($scope.checkPrice == 1) {
+                $scope.in = $scope.lstAddedProducts.findIndex(p => p.productVariants.variantId == $scope.productVariantEdit.productVariants.variantId && p.price == $scope.productVariantEdit.price);
+                $scope.lstAddedProducts[$scope.in].quantity += $scope.productVariantEdit.quantity;
+                $scope.lstAddedProducts.splice($scope.index, 1);
+                toastMessage('', 'Cập nhật thành công !', 'success');
+                $('#exampleModalEditCart').modal('hide');
+            } else {
+                $scope.lstAddedProducts[$scope.index].price = $scope.productVariantEdit.price;
+                toastMessage('', 'Cập nhật thành công !', 'success');
+                $('#exampleModalEditCart').modal('hide');
+            }
+            // }
+        }
+
+        // if ($scope.productVariantEdit.quantity == undefined) {
+        //     $scope.messageQuantity = 'Số lượng không phù hợp';
+        // } else {
+        //     $scope.lstAddedProducts[$scope.index].quantity = $scope.productVariantEdit.quantity;
+        //     $scope.lstAddedProducts[$scope.index].price = $scope.productVariantEdit.price;
+        //     toastMessage('', 'Cập nhật thành công !', 'success');
+        //     $('#exampleModalEditCart').modal('hide');
+        // }
+    }
+
+    //open delete cart modal
+    $scope.modalDeleteCart = async function (index) {
+        $scope.index = index;
+        console.log('1');
+        $('#exampleModalDeleteCart').modal('show');
+    }
+
+    //onDelete Cart
+    $scope.onDeleteCart = async function () {
+
+        $scope.lstAddedProducts.splice($scope.index, 1);
+        $('#exampleModalDeleteCart').modal('hide');
+        toastMessage('', 'Xóa thành công !', 'success');
+        console.log($scope.lstAddedProducts);
+
+
+    }
+
+    $scope.create = function () {
+        $scope.check = 0;
+        $scope.messageCus = '';
+        $scope.messageSeller = '';
+        $scope.messageBillDetails = '';
+        console.log($scope.billDetails);
+        console.log($scope.bill.customers);
+        if ($scope.bill.customers == undefined) {
+            $scope.messageCus = 'Chưa chọn khách hàng';
+            $scope.check = 1;
+        }
+
+        if ($scope.bill.users == undefined) {
+            $scope.messageSeller = 'Chưa chọn người bán';
+            $scope.check = 1;
+        }
+        console.log($scope.lstAddedProducts.length);
+        if ($scope.lstAddedProducts.length == 0) {
+            $scope.messageBillDetails = 'must not be empty';
+            $scope.check = 1;
+        } else {
+            $scope.messageBillDetails = '';
+        }
+
+        if ($scope.detailAddress != '' && $scope.wardName != '' && $scope.districtName != '' && $scope.divisionName != '') {
+            $scope.addressOrder = $scope.detailAddress + ' - ' + $scope.wardName + ' - ' + $scope.districtName + ' - ' + $scope.divisionName;
+        } else {
+            confirm('Mời bạn điền địa chỉ đầy đủ');
+            $scope.check = 1;
+        }
+
+        if ($scope.check == 1) {
+            return;
+        }
+
+        console.log($scope.addressOrder);
+
+        $scope.bill.address = $scope.addressOrder;
+        var data = {
+            bill: $scope.bill,
+            billDetails: $scope.lstAddedProducts
+        }
+        console.log(data);
+
+
+        $http.post(`http://buiquanghieu.xyz/PRO2111_FALL2022/admin/rest/bills/create-bill-and-billdetail`, data, {
+            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+        })
+            .then(resp => {
+                console.log(resp.data);
+                if (resp.data != null) {
+                    $scope.bills.push(resp.data);
+                    $scope.bill = {};
+                    $scope.lstAddedProducts = {};
+                    $scope.success = 1;
+
+                    console.log($scope.success == 1);
+                    // if ($scope.success == 1) {
+                        Swal.fire({
+                            title: 'Bạn có muốn xuất hóa đơn?',
+                            text: "",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $window.open(`http://buiquanghieu.xyz/PRO2111_FALL2022/admin/rest/pdf/print/${resp.data.billId}`, '_blank');
+                            }
+                            $('#order-tab').tab('show');
+                            toastMessage('', 'Tạo đơn hàng thành công!', 'success');
+                        })
+                    // }
+                    // $scope.initializBill();
+                    // toastMessage('', 'Tạo đơn hàng thành công!', 'success');
+                } else {
+                    // toastMessage('', 'Tạo đơn hàng thất bại!', 'error');
+                }
+
+            })
+            .catch(error => {
+                toastMessage('', 'Tạo đơn hàng thất bại!', 'error');
+                $scope.success = 0;
+                $scope.messageError = error.data;
+                console.log(error);
+                return
+            })
+
+    }
+
+    //list
+
+    $scope.initializOrder = async function () {
+        await $http.get(`${billApi}`, {
+            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+        })
+            .then(resp => {
+                console.log(resp.data);
+                $scope.bills = resp.data;
+                $scope.isLoading = false;
+            })
+            .catch(error => {
+                console.log(error);
+                $scope.isLoading = false;
+            })
+    }
+
+    $scope.initializOrder();
+
+    //get bill detail
+    $scope.getBillDetail = function (bill) {
+        // $scope.billDetails = [];
+        // //close all collapse
+        // for (let index = 0; index < $scope.bills.length; index++) {
+        //     if ($scope.bills[index].billId != bill.billId) {
+        //         $('#collapseBill_' + $scope.bills[index].billId).collapse('hide');
+        //     }
+        // }
+        // //if collapse open 
+        // $('#collapseBill_' + bill.billId).on('shown.bs.collapse', function () {
+        console.log(bill.billId);
+        $scope.isLoading = true;
+        $http.get(`${billDetailApi}/find-by-bill/${bill.billId}`, {
+            headers: { 'Authorization': 'Bearer ' + $scope.authToken }
+        })
+            .then(function (response) {
+                console.log(response.data)
+                $scope.billDetails = response.data;
+
+
+                $scope.billDetails.forEach(item => {
+                    console.log(item.productVariants.variantId);
+                    $http.get(`${variantValueAPI}/find-by-product-variant/${item.productVariants.variantId}`)
+                        .then(resp1 => {
+                            var lstData = resp1.data;
+                            console.log(resp1.data);
+                            var lstValueName = [];
+                            lstData.forEach(subItem => {
+                                lstValueName.push(subItem.optionValues.valueName);
+                            });
+                            customName = lstValueName.join("-");
+                            //Set name product display
+                            var nameOld = item.productVariants.products.productName;
+                            item.productVariants.products.productName = `${nameOld} [${customName}]`;
+
+
+                            $scope.isLoading = false;
+                        })
+
+                        .catch(error => {
+                            $scope.isLoading = false;
+                            console.log(error)
+                        })
+                });
+                $('#exampleModalCartDetail').modal('show');
+
+                $scope.isLoading = false;
+            }).catch(function (error) {
+                console.log(error);
+                $scope.isLoading = false;
+            });
+        // });
+
+    }
+
+    //Page Product Variant
+    $scope.beginProductVariant = 0; // hiển thị thuộc tính bắt đầu từ 0
+    $scope.pageSizeProductVariant = 10; // Hiển thị 5 thuộc tính
+    $scope.pageProductVariant = 1;
+
+    // Hàm để cập nhật lại begin khi select thay đổi, thẻ select dùng chỉ thị ng-change ProductVariant
+    $scope.repaginateProductVariant = function (size) {
+        $scope.beginProductVariant = 0;
+        $scope.pageProductVariant = 1;
+        $scope.pageCountProductVariant = Math.ceil($scope.lstProductVariant.length / size);
+        $scope.pageSizeProductVariant = size;
+    };
+
+    // Hàm nút first
+    $scope.firstProductVariant = function () {
+        $scope.beginProductVariant = 0;
+        $scope.pageProductVariant = 1;
+    };
+
+
+    // Hàm nút previous
+    $scope.previousProductVariant = function () {
+        if ($scope.beginProductVariant > 0) {
+            $scope.beginProductVariant -= $scope.pageSizeProductVariant;
+            $scope.pageProductVariant--;
+        }
+    }
+
+
+    // Hàm nút next
+    $scope.nextProductVariant = function () {
+        if ($scope.beginProductVariant < (Math.ceil($scope.lstProductVariant.length / $scope.pageSizeProductVariant) - 1) * $scope.pageSizeProductVariant) {
+            $scope.beginProductVariant += $scope.pageSizeProductVariant;
+            $scope.pageProductVariant++;
+        }
+    }
+
+
+    // Hàm nút last
+    $scope.lastProductVariant = function () {
+        $scope.beginProductVariant = (Math.ceil($scope.lstProductVariant.length / $scope.pageSizeProductVariant) - 1) * $scope.pageSizeProductVariant;
+        $scope.pageProductVariant = $scope.pageCountProductVariant;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // API Adress
+
+    $scope.sttDivision = false;
+    $scope.sttDistrict = false;
+    $scope.sttWard = false;
+    $scope.wardName = ''
+    $scope.districtName = ''
+    $scope.divisionName = ''
+
+    //Upload image
+    $scope.imageChanged = function (files) {
+        var data = new FormData();
+        data.append('file', files[0]);
+        $scope.isLoading = true;
+        $http.post('http://localhost:8080/SOF306_Hieubq-2/rest/upload/images/acc', data, {
+            transformRequest: angular.identity,
+            headers: { 'Content-Type': undefined }
+        }).then(resp => {
+            $scope.form.image = resp.data.name;
+            $scope.isLoading = false;
+            confirm('success');
+        }).catch(error => {
+            $scope.isLoading = false;
+            confirm('Lỗi');
+            console.log(error);
+        })
+    }
+
+
+
+    $scope.getDivision = function () {
+        $http.get('https://provinces.open-api.vn/api/p/?depth=2')
+            .then(resp => {
+                // console.log(resp.data);
+                $scope.lstDivision = resp.data;
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    // $scope.getDivision();
+
+    //clickDivision
+    $scope.clickDivision = function () {
+        $scope.getDivision();
+        $scope.sttDivision = true;
+        $scope.sttDistrict = false;
+        $scope.sttWard = false;
+    }
+
+    //clickDistrict
+    $scope.clickDistrict = function () {
+        $scope.sttDivision = false;
+        $scope.sttDistrict = true;
+        $scope.sttWard = false;
+    }
+
+    //clickWard
+    $scope.clickWard = function () {
+        $scope.sttDivision = false;
+        $scope.sttDistrict = false;
+        $scope.sttWard = true;
+    }
+
+    //changeDivision
+    $scope.changeDivision = function (code) {
+        $scope.sttDivision = false;
+        $scope.wardName = ''
+        $scope.districtName = ''
+        // console.log($scope.divisionCode);
+        $http.get(`https://provinces.open-api.vn/api/p/${code}?depth=2`)
+            .then(resp => {
+                // console.log(resp.data);
+                $scope.divisionName = resp.data.name;
+                $scope.lstDistrict = resp.data.districts;
+                // console.log(resp.data.districts);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    //changeDistrict
+    $scope.changeDistrict = function (code) {
+        $scope.sttDistrict = false;
+        $scope.wardName = ''
+        // console.log($scope.divisionCode);
+        $http.get(`https://provinces.open-api.vn/api/d/${code}?depth=2`)
+            .then(resp => {
+                // console.log(resp.data);
+                $scope.districtName = resp.data.name;
+                $scope.lstWard = resp.data.wards;
+                // console.log(resp.data.districts);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    //changeWard
+    $scope.changeWard = function (wardNameSelect) {
+        $scope.sttWard = false;
+        $scope.wardName = wardNameSelect;
+    }
+
+
+    //searchDivision
+    $scope.searchDivision = function (name) {
+        $http.get(`https://provinces.open-api.vn/api/p/search/?q=${markRequireAll(name)}`)
+            .then(resp => {
+                // console.log(resp.data);
+                $scope.lstDivision = resp.data;
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    //searchDistrict
+    $scope.searchDistrict = function (name) {
+        // console.log(name);
+        if ($scope.divisionCode === null || $scope.divisionCode === undefined) {
+            return;
+        }
+
+        if (name === '' || name === undefined) {
+            $http.get(`https://provinces.open-api.vn/api/p/${$scope.divisionCode}?depth=2`)
+                .then(resp => {
+                    // console.log(resp.data);
+                    $scope.lstDistrict = resp.data.districts;
+                    // console.log(resp.data.districts);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+        else {
+            $http.get(`https://provinces.open-api.vn/api/d/search/?q=${markRequireAll(name)}&p=${$scope.divisionCode}`)
+                .then(resp => {
+                    console.log(resp.data);
+                    $scope.lstDistrict = resp.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+    }
+
+
+    //searchWard
+    $scope.searchWard = function (name) {
+        // console.log(name);
+        if ($scope.districtCode === null || $scope.districtCode === undefined) {
+            return;
+        }
+
+        if (name === '' || name === undefined) {
+            $http.get(`https://provinces.open-api.vn/api/d/${$scope.districtCode}?depth=2`)
+                .then(resp => {
+                    // console.log(resp.data);
+                    $scope.lstWard = resp.data.wards;
+                    // console.log(resp.data.districts);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+        else {
+            $http.get(`https://provinces.open-api.vn/api/w/search/?q=${markRequireAll(name)}&d=${$scope.districtCode}`)
+                .then(resp => {
+                    console.log(resp.data);
+                    $scope.lstWard = resp.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+    }
+
+    //btnPrintAddress
+    $scope.btnPrintAddress = function () {
+        // if ($scope.wardName != '' && $scope.districtName != '' && $scope.divisionName != '') {
+        //     $scope.addressOrder = $scope.wardName + ' - ' + $scope.districtName + ' - ' + $scope.divisionName;
+        // } else {
+        //     confirm('Mời bạn điền địa chỉ đầy đủ')
+        // }
+        // $('#nav-form-tab').tab('show');
+
+
+    }
+
+    $scope.toastSucess = function () {
+        toastMessage('', 'Thêm mới thành công', 'success')
+    }
+
+    $scope.toastError = function () {
+        toastMessage('', 'Thêm mới thất bại', 'error')
+    }
+
+    function markRequireAll(query) {
+        const words = query.split(/\s+/)
+        return words.map(w => `+${w}`).join(' ')
+    }
+
+    function toastMessage(heading, text, icon) {
+        // $.toast({
+        //     heading: heading,
+        //     text: text,
+        //     position: 'top-right',
+        //     icon: icon
+        // })
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Toast.fire({
+            icon: icon,
+            title: text
+        })
+    }
+
+
+})

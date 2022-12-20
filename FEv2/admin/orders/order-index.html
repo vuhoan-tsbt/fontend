@@ -1,0 +1,27 @@
+<div ng-show="isLoading" class="loading">
+    <div class="spinner-border text-primary spinner-center" role="status">
+    </div>
+</div>
+
+<h2 class="text-uppercase mb-2">Quản lý hóa đơn</h2>
+
+<ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button ng-click="selectedTabCreate()" class="nav-link active" id="order-create-tab" data-bs-toggle="tab"
+            data-bs-target="#order-create" type="button" role="tab" aria-controls="order-create"
+            aria-selected="false">Tạo mới</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button ng-click="loadListBill()" class="nav-link " id="order-tab" data-bs-toggle="tab" data-bs-target="#order"
+            type="button" role="tab" aria-controls="order" aria-selected="true">Danh sách hóa đơn</button>
+    </li>
+
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="order-create" role="tabpanel" aria-labelledby="order-create-tab">
+        <div ng-include="'/admin/orders/tab-order-create.html'"></div>
+    </div>
+    <div class="tab-pane fade" id="order" role="tabpanel" aria-labelledby="order-tab"
+        ng-include="'/admin/orders/tab-order-list.html'">
+    </div>
+</div>

@@ -1,0 +1,602 @@
+<!-- <div ng-show="isLoading" class="loading">
+    <div class="spinner-border text-primary spinner-center" role="status">
+    </div>
+</div>
+ -->
+
+<div class="row">
+    <div class="row">
+        <p class="col-sm-2 mt-2">
+            <button ng-click="addTabs()" id="btn-add-tab" type="button" class="btn btn-outline-primary pull-right">Tạo
+                mới
+                hóa đơn</button>
+        </p>
+        <div class="col-md-2 offset-8 mt-2">
+            <button class="btn btn-outline-success" ng-click="onOpenQRCode1()">QR Code sản phẩm <i
+                    class="bi bi-qr-code fw-bold"></i></button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <!-- <button class="btn btn-link" ng-if="showPrevious" ng-click="previousTab()"><i
+                        class="bi bi-arrow-left-short"></i></button> -->
+                <li class="nav-item m-0" role="presentation" ng-repeat="num in counts | limitTo: tabSize : beginTab">
+                    <button class="nav-link" ng-click="selectedTab(num.index)" id="new-tab{{num.index}}"
+                        data-bs-toggle="tab" data-bs-target="#tab{{num.index}}" type="button" role="tab"
+                        aria-controls="tab{{num.index}}" aria-selected="true">Hóa đơn
+                        {{num.index}}<a class="btn btn-sm" ng-click="closeTab($index,num.index)"><i
+                                class="bi bi-x"></i></a></button>
+
+                </li>
+                <!-- <button class="btn btn-link" ng-if="showNext" ng-click="nextTab()"><i
+                        class="bi bi-arrow-right-short"></i></button> -->
+            </ul>
+        </div>
+        <!-- <div class="col-sm-5">
+            <input class="form-control" placeholder="Tìm kiếm sản phẩm" type="text" ng-model="txtSearchProductVariant"
+                ng-change="searchProductVariantByName(txtSearchProductVariant)"
+                ng-click="clickSearch(txtSearchProductVariant)" ng-model-options="{debounce : 500}">
+            <div id="search" class="output-complete has-add-new ng-hide list-group-flush pro row rounded mt-2 col-4"
+                style="background-color: rgb(247, 247, 247);height: 550px; overflow: auto;"
+                ng-show="lstProductVariant.length">
+                <ul class=" bg-light" style="position: sticky; top: 0;">
+                    <li class="offset-11 col-1 rounded xBackground"
+                        style="list-style-type: none; width: 16px; float: right;"><i class="bi bi-x-lg"
+                            ng-click="closeLstProVal()"></i>
+                    </li>
+                </ul>
+                <ul ng-repeat="pro in lstProductVariant" ng-click="onAddCart(pro)" class="proVal">
+                    <div class="row">
+                        <li class="col-xl-7" style="list-style-type: none;"><b>{{pro.products.productName}}</b></li>
+                        <li class="col-xl-2" style="list-style-type: none;">
+                            <p class="text-end" ng-if="pro.sales > 0" style="text-decoration: line-through;">{{pro.price
+                                |currency:"":0}}</p>
+                        </li>
+                        <li class="col-xl-3" style="list-style-type: none;">
+                            <p class="text-end" ng-if="pro.sales > 0">
+                                {{pro.price-pro.sales |currency:"":0}}</p>
+                            <p class="text-end" ng-if="pro.sales ==0">{{pro.price |
+                                currency:"":0}}</p>
+                        </li>
+                    </div>
+                    <li style="list-style-type: none;">{{pro.skuId}}</li>
+                    <li style="list-style-type: none;"><i style="color: rgb(151, 151, 151);">Quantity:</i>
+                        {{pro.quantity | currency:"":0}}</li>
+                </ul>
+            </div>
+
+        </div> -->
+    </div>
+    <div class="tab-content">
+        <div ng-repeat="num in counts" class="tab-pane fade tab" id="tab{{num.index}}" role="tabpanel"
+            aria-labelledby="tab{{num.index}}">
+            <div class="row">
+                <div>
+                    <h5 class="text-center mt-3">Hóa đơn {{num.index}}</h5>
+                </div>
+                <div class="col-md-5 border rounded mt-3">
+                    <h4 class="text-center mb-3 mt-2">Thông tin khách hàng</h4>
+
+                    <div class="row">
+                        <div class="col-6 mt-4">
+                            <input class="form-control" ng-model="txtSearchCustomer"
+                                ng-change="searchCustomerByPhoneOrEmail(txtSearchCustomer)"
+                                ng-click="clickSearchCustomer(txtSearchCustomer)" ng-model-options="{debounce : 500}"
+                                placeholder="Search by phone or email" type="text">
+                        </div>
+
+                        <div class="col-6 mb-3">
+                            <label for="user" class="form-lable">Khách hàng:</label>
+                            <!-- <input class="form-control" ng-model="dynamicBill().customers.fullName"
+                                ng-click="clickCustomer()" readonly> -->
+                            <div class="input-group">
+                                <select id="customers" class="form-control lstCustomers"
+                                    ng-change="changeCustomer(dynamicBill().customers)"
+                                    ng-model="dynamicBill().customers"
+                                    ng-options="cus as cus.fullName for cus in customers track by cus.userId">
+                                </select>
+                                <span class="input-group-text"><a ng-click="openModalAddNewCustomer()"><i
+                                            class="bi bi-plus"></i></a></span>
+                            </div>
+                            <!-- <select size="5" id="customers" class="form-control lstCustomers"
+                                ng-change="changeCustomer(dynamicBill().customers)" ng-model="dynamicBill().customers"
+                                ng-show="sttCustomer">
+                                <option ng-value="">Null</option>
+                                <option ng-repeat="cus in customers" ng-value="{{cus}}">{{cus.fullName}}
+                                </option>
+                            </select> -->
+                            <div>
+                                <span ng-if="messageCus != ''"
+                                    style="color: red; font-style: italic;">{{messageCus}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div></div> -->
+                    <div class="mb-3 ">
+                        <label class="form-lable">Mã HĐ: </label>
+                        <div class="form-control">{{formBill.billId}}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="user" class="form-lable">Người bán:</label>
+                            <div class="form-control">{{userLogin.fullName}}</div>
+                            <!-- <select id="user" class="form-control" ng-model="dynamicBill().users">
+                                    <option ng-repeat="seller in sellers" ng-value="{{seller}}">{{seller.fullName}}</option>
+                                </select> -->
+                            <div>
+                                <span ng-if="messageSeller != ''"
+                                    style="color: red; font-style: italic;">{{messageSeller}}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-6 mb-3">
+                            <label for="phone" class="form-lable">Số điện thoại:</label>
+                            <input type="text" id="phone" class="form-control" placeholder="Số điện thoại"
+                                ng-model="dynamicBill().phone">
+                            <div>
+                                <span ng-if="messagePhone != ''"
+                                    style="color: red; font-style: italic;">{{messagePhone}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label for="" class="form-lable">Địa chỉ:</label>
+                        <div class="col-6 mb-3">
+
+                            <div class="">
+                                <!-- <input class="form-control" type="text" placeholder="Thành phố/Tỉnh..."
+                                    ng-model="dynamicAddress().divisionName" ng-click="clickDivision()" readonly> -->
+                                <select class="form-control" ng-model="dynamicAddress().division"
+                                    ng-change="changeDivision(dynamicAddress().division.ProvinceID, dynamicAddress().division.ProvinceName)"
+                                    ng-click="clickDivisionOnSelect()"
+                                    ng-options="division as division.ProvinceName for division in dynamicLstDivision() track by division.ProvinceID">
+                                    <option value="" ng-click="clickNullDivision()">Tỉnh/Thành phố</option>
+                                    <!-- <option ng-repeat="division in dynamicLstDivision()" ng-value="{{division}}">
+                                        {{division.ProvinceName}}</option> -->
+                                </select>
+                            </div>
+
+                            <div class="mt-3">
+                                <!-- <input class="form-control" type="text" placeholder="Quận/Huyện..."
+                                    ng-model="dynamicAddress().districtName" ng-click="clickDistrict()" readonly> -->
+                                <select class="form-control" ng-model="dynamicAddress().district"
+                                    ng-change="changeDistrict(dynamicAddress().district.DistrictID, dynamicAddress().district.DistrictName)"
+                                    ng-click="clickDistrictOnSelect()"
+                                    ng-options="district as district.DistrictName for district in dynamicLstDistrict() track by district.DistrictID">
+                                    <option value="" ng-click="clickNullDistrict()">Quận/Huyện</option>
+                                    <!-- <option ng-repeat="district in dynamicLstDistrict()" ng-value="{{district}}">
+                                        {{district.DistrictName}}</option> -->
+                                </select>
+                            </div>
+
+                            <div class="mt-3">
+                                <!-- <input class="form-control" type="text" placeholder="Phường/Xã..."
+                                    ng-model="dynamicAddress().wardName" ng-click="clickWard()" readonly> -->
+                                <select class="form-control" ng-model="dynamicAddress().ward"
+                                    ng-change="changeWard(dynamicAddress().ward.WardName,dynamicAddress().ward.WardCode)"
+                                    ng-click="clickWardOnSelect()"
+                                    ng-options="ward as ward.WardName for ward in dynamicLstWard() track by ward.WardCode">
+                                    <option value="" ng-click="clickNullWard()">Xã/Phường</option>
+                                    <!-- <option ng-repeat="ward in dynamicLstWard()" ng-value="{{ward}}">{{ward.WardName}}
+                                    </option> -->
+                                </select>
+                            </div>
+                            <div>
+                                <span ng-if="messageAddress != ''"
+                                    style="color: red; font-style: italic;">{{messageAddress}}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-6 form-floating">
+                            <label for=""></label>
+                            <textarea class="form-control" ng-model="$parent.dynamicAddress().detailAddress"
+                                placeholder="Leave a comment here" id="floatingTextarea2"
+                                style="height: 145px"></textarea>
+                            <label for="floatingTextarea2" class="ms-2">Địa chỉ chi tiết:</label>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-6 form-floating">
+                            <div class="mb-3">
+                                <label class="form-lable">Khuyến mãi: </label>
+                                <div class="input-group">
+                                    <input class="form-control" ng-model="dynamicBill().discount" type="number"
+                                        ng-change="changeDiscount()" ng-model-options="{debounce : 500}">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="mb-3">
+                                <label class="form-lable">Tổng tiền sản phẩm: </label>
+                                <div class="input-group">
+                                    <input class="form-control" ng-model="dynamicTotalProPrice().price" readonly>
+                                    <span class="input-group-text">VNĐ</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <div class="mb-3">
+                                <label class="form-lable">Phương thức mua hàng: </label>
+                                <select class="form-control" ng-change="shippingFee()" ng-model="dynamicBill().billType"
+                                    convert-to-number>
+                                    <option value="1">Tại cửa hàng</option>
+                                    <option value="0">Online</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="col-6 form-floating">
+                            <div class="mb-3">
+                                <label class="form-lable">Phương thức thanh toán: </label>
+                                <select class="form-control" ng-model="dynamicBill().payments" convert-to-number>
+                                    <option value="0">Tiền mặt</option>
+                                    <option value="1">Online</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" ng-model="dynamicBill().status"
+                                    id="flexCheckChecked">
+                                <label class="form-check-label" for="flexCheckChecked">
+                                    Chờ thanh toán
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row mb-3" ng-if="dynamicAddress().ward && dynamicBill().billType == 0">
+                        <div class="row">
+                            <label for="" class="form-lable col-6">Đơn vị vận chuyển:</label>
+                            <img src="\images\logo\ghn.jpg" class="col-6" style="width:20%;">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-lable col-6">Phí vận chuyển: </label>
+                            <input class="form-control col-6" ng-model="dynamicBill().shippingFee" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-lable col-6">Tổng tiền: </label>
+                            <input class="form-control col-6"
+                                value="{{dynamicTotalProPrice().price + dynamicBill().shippingFee}}" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="mb-3 form-floating">
+                            <!-- <label class="form-lable">Ghi chú: </label>
+                            <input class="form-control" ng-model="dynamicBill().note"> -->
+
+                            <textarea class="form-control" ng-model="$parent.dynamicBill().note"
+                                placeholder="Leave a comment here" id="floatingTextarea3" style="height: 135px"
+                                ng-change="changeNote()"></textarea>
+                            <label for="floatingTextarea3" class="ms-1">Ghi chú:</label>
+                            <div>
+                                <span ng-if="messageNote != ''"
+                                    style="color: red; font-style: italic;">{{messageNote}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4 offset-8">
+                            <button class="btn btn-primary" ng-click="create()">Tạo hóa đơn</button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-7 border rounded mt-3">
+                    <h4 class="text-center mb-3 mt-2">Giỏ hàng</h4>
+                    <div class="row">
+                        <div class="col-sm-6 offset-6">
+                            <input class="form-control" placeholder="Tìm kiếm sản phẩm" type="text"
+                                ng-model="txtSearchProductVariant"
+                                ng-change="searchProductVariantByName(txtSearchProductVariant)"
+                                ng-click="clickSearch(txtSearchProductVariant)" ng-model-options="{debounce : 500}">
+                            <div id="search"
+                                class="output-complete has-add-new ng-hide list-group-flush pro row rounded mt-2 m-0"
+                                style="background-color: rgb(247, 247, 247);max-height: 550px; overflow: auto;"
+                                ng-show="lstProductVariant.length">
+                                <ul class=" bg-light" style="position: sticky; top: 0;">
+                                    <li class="offset-11 col-1 rounded xBackground"
+                                        style="list-style-type: none; width: 16px; float: right;"><i class="bi bi-x-lg"
+                                            ng-click="closeLstProVal()"></i>
+                                    </li>
+                                </ul>
+                                <ul ng-repeat="pro in lstProductVariant" ng-click="onAddCart(pro)" class="proVal">
+                                    <div class="row">
+                                        <li class="col-xl-7" style="list-style-type: none;">
+                                            <b>{{pro.products.productName}}</b>
+                                        </li>
+                                        <li class="col-xl-2" style="list-style-type: none;">
+                                            <p class="text-end" ng-if="pro.sales > 0"
+                                                style="text-decoration: line-through;">{{pro.price
+                                                |currency:"":0}}</p>
+                                        </li>
+                                        <li class="col-xl-3" style="list-style-type: none;">
+                                            <p class="text-end" ng-if="pro.sales > 0">
+                                                {{pro.price-pro.sales |currency:"":0}}</p>
+                                            <p class="text-end" ng-if="pro.sales ==0">{{pro.price |
+                                                currency:"":0}}</p>
+                                        </li>
+                                    </div>
+                                    <li style="list-style-type: none;">{{pro.skuId}}</li>
+                                    <li style="list-style-type: none;"><i
+                                            style="color: rgb(151, 151, 151);">Quantity:</i>
+                                        {{pro.quantity | currency:"":0}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <th>#</th>
+                                <th>Sản phẩm</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-center">Đơn giá (VNĐ)</th>
+                                <th class="text-center">Thuế (%)</th>
+                                <th>Thành tiền (VNĐ)</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="pro in dynamicAddedProducts()">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{pro.productVariants.products.productName}}</td>
+                                    <td>
+                                        <a ng-click="decrease($index)" ng-model-options="{debounce : 500}"><i
+                                                class="bi bi-dash-circle"></i></a>
+                                        <input type="number" ng-model="pro.quantity"
+                                            ng-mouseover="oldQuantityOfCart($index)" ng-change="quantityChange($index)"
+                                            ng-model-options="{debounce : 500}" class="col-6 border-0 text-center"
+                                            value='pro.quantity' max="{{maxProduct}}" min="1" />
+                                        <a ng-click="increase($index)" ng-model-options="{debounce : 500}"><i
+                                                class="bi bi-plus-circle"></i></a>
+                                    </td>
+                                    <td>
+                                        <input type="number" ng-model='pro.price' ng-click="oldPriceOfCart($index)"
+                                            ng-change="priceChange($index)" ng-model-options="{debounce : 1000}"
+                                            class="col-7 border-0 text-end" />
+                                    </td>
+                                    <td class="text-center">{{pro.tax | currency:"":0}}</td>
+                                    <td class="text-center">{{pro.totalMoney | currency:"":0}}</td>
+                                    <td>
+                                        <!-- <button class="btn btn-success" ng-click="modalEditCart($index)">Sửa</button> -->
+                                        <a ng-click="modalDeleteCart($index)"><i class="bi bi-trash"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <span ng-if="messageBillDetails != ''"
+                                style="color: red; font-style: italic;">{{messageBillDetails}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Bluv.snk 2022</span>
+        </div>
+    </div>
+</footer>
+<!-- End of Footer -->
+
+
+<!-- modal create order -->
+<div style="z-index: 1500;" class="modal fade modal-option" id="exampleModalAddOrder" tabindex="-1"
+    aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title d-flex justify-content-center" id="exampleModalLabel">Add Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-1">
+                        <label for="recipient-name" class="col-form-label">Sản phẩm:
+                            {{productVariant.products.productName}}</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Đơn giá:</label>
+                        <input type="number" class="form-control" id="email" ng-model="productVariant.price" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Số lượng:</label>
+                        <input type="number" class="form-control" id="Password" ng-model="productVariant.quantity"
+                            max="{{maxProduct}}" min="1" />
+                        <div>
+                            <span ng-if="messageQuantity != ''"
+                                style="color: red; font-style: italic;">{{messageQuantity}}</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="onAddCart()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal edit cart -->
+<div style="z-index: 1500;" class="modal fade modal-option" id="exampleModalEditCart" tabindex="-1"
+    aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title d-flex justify-content-center" id="exampleModalLabel">Edit Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-1">
+                        <label for="recipient-name" class="col-form-label">Sản phẩm:
+                            {{productVariantEdit.productVariants.products.productName}}</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Đơn giá:</label>
+                        <input type="number" class="form-control" id="email" ng-model="productVariantEdit.price" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Số lượng:</label>
+                        <input type="number" class="form-control" id="Password" ng-model="productVariantEdit.quantity"
+                            max="{{maxProduct}}" min="1" />
+                        <div>
+                            <span ng-if="messageQuantity != ''"
+                                style="color: red; font-style: italic;">{{messageQuantity}}</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="onEditCart()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal delete Cart Confirm  -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalDeleteCart" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Sản phẩm sẽ bị xóa?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" ng-click="onDeleteCart()">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalCamereQR1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div ng-show="isLoading" class="loading">
+                <div class="spinner-border text-primary spinner-center" role="status">
+                </div>
+            </div>
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">QR Code</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    ng-click="onCloseQRCode1()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row m-0 mb-2">
+                    <select class="form-select" ng-change="changeCamera1(camera)" ng-model="camera"
+                        ng-options="cam as cam.name for cam in lstCamera track by cam.id">
+                    </select>
+                </div>
+                <div>
+                    <video class="m-0" id="preview1" width="100%" height="100%"></video>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                    ng-click="onCloseQRCode1()">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal add new customer -->
+<div class="modal fade" id="addNewCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Thêm mới khách hàng</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <label for="fullName" class="form-lable">Họ và tên:</label>
+                    <input type="text" id="fullName" class="form-control" ng-model="newCustomer.fullname">
+                    <div>
+                        <span ng-if="messageError"
+                            style="color: red; font-style: italic;">{{messageError.fullname}}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="phone" class="form-lable">Số điện thoại:</label>
+                    <input type="text" id="phone" class="form-control" ng-model="newCustomer.phone">
+                    <div>
+                        <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.phone}}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="email" class="form-lable">Email:</label>
+                    <input type="text" id="email" class="form-control" ng-model="newCustomer.email">
+                    <div>
+                        <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.email}}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="sex" class="form-lable col-sm-4">Giới tính:</label>
+                    <div class="form-check col-sm-4">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                            value="1" ng-model="newCustomer.sex" ng-checked="newCustomer.sex == 1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Nam
+                        </label>
+                    </div>
+                    <div class="form-check col-sm-4">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                            value="0" ng-model="newCustomer.sex" ng-checked="newCustomer.sex == 0">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Nữ
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" ng-click="addNewCustomer()">Thêm mới</button>
+            </div>
+        </div>
+    </div>
+</div>

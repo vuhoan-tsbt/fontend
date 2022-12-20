@@ -1,0 +1,68 @@
+<div class="container">
+    <form action="">
+        <label for="customRange2" class="form-label">Example range</label>
+        <div class="price-slider">
+            <input class="form-range" min="{{minRange}}" max="{{maxRange}}" step="1" type="range" ng-model="valRangeMin" id="valMin" ng-change="changeVal()">
+            <input class="form-range" min="{{minRange}}" max="{{maxRange}}" step="1" type="range" ng-model="valRangeMax" id="valMax" ng-change="changeVal()">
+        </div>
+        <button class="btn btn-success" ng-click="submitRange()">Sumbit</button>
+    </form>
+    <div>
+        <p>Min = {{valRangeMin | number}}</p>
+        <p>Max = {{valRangeMax | number}}</p>
+    </div>
+</div>
+
+
+<style>
+    .price-slider {
+        position: relative;
+        width: 400px;
+        margin: 0 auto 20px;
+        height: 35px;
+        text-align: center;
+    }
+
+    .price-slider input {
+        pointer-events: none;
+        position: absolute;
+        left: 0;
+        top: 15px;
+        width: 100%;
+        outline: none;
+        height: 18px;
+        margin: 0;
+        padding: 0;
+        border-radius: 8px;
+    }
+
+    .price-slider input::-webkit-slider-thumb {
+        pointer-events: all;
+        position: relative;
+        z-index: 1;
+        outline: 0;
+        height: 24px;
+        widows: 24px;
+        border-radius: 12px;
+        background-color: white;
+        border: 2px solid black;
+        -webkit-appearance: none;
+    }
+
+    .price-slider input::-moz-range-thumb {
+        pointer-events: all;
+        position: relative;
+        z-index: 1;
+        outline: 0;
+        height: 24px;
+        widows: 24px;
+        border-radius: 12px;
+        background-color: white;
+        border: 2px solid black;
+        -moz-appearance: none;
+    }
+
+    input::-moz-range-track {
+        background: #ccc;
+    }
+</style>

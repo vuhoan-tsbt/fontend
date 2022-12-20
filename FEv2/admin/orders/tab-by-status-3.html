@@ -1,0 +1,138 @@
+<div class="row mb-4 mt-3">
+    <div class="col-md-2 mt-2">
+        <select class="form-select" ng-change="filter(filterOption)" ng-model="filterOption" convert-to-number>
+            <option value="1">Mã HĐ</option>
+            <option value="2">Khách hàng</option>
+            <option value="3">Số điện thoại</option>
+            <option value="4">Địa chỉ</option>
+            <option value="5">Nhân viên</option>
+        </select>
+    </div>
+
+    <div class="col-md-7 mt-2">
+        <input class="form-control" type="text" placeholder="Tìm kiếm hóa đơn" ng-model="txtSearch" id="txtSearchBill"
+            ng-change="searchBill(txtSearch)" ng-model-options="{debounce : 500}">
+    </div>
+
+    <div class="col-md-2 mt-2">
+        <button class="btn btn-outline-success" ng-click="onOpenQRCode()">QR Code hóa đơn <i
+                class="bi bi-qr-code fw-bold"></i></button>
+    </div>
+
+    <div class="col-md-1 mt-2">
+        <select name="" id="pageSize" class="form-select" ng-change="repaginateBill(pageSize)" ng-model="pageSize"
+            convert-to-number>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+        </select>
+    </div>
+</div>
+
+<div ng-if="bills.length <= 0" class="alert alert-danger text-center mt-4" role="alert">
+    <span style="color: red; font-style: italic;">Chưa có bản ghi nào</span>
+  </div>
+<div class="table-responsive border rounded row" style="max-height: 500px; overflow: auto;"  ng-if="bills.length > 0">
+    <table class="table table-bordered">
+        <thead>
+            <tr style="position: sticky; top: 0;">
+                <th class="bg-light">
+                    <input type="checkbox" ng-model="selectedAllBill" id="checkAll3"
+                        ng-click="clickSelectAllBill(selectedAllBill)">
+                </th>
+                <th class="bg-light">Mã HĐ</th>
+                <th class="bg-light">Khách hàng</th>
+                <th class="bg-light">Số điện thoại</th>
+                <!-- <th class="bg-light">Địa chỉ</th> -->
+                <th class="bg-light">Nhân viên</th>
+                <th class="bg-light">Tổng tiền (VNĐ)</th>
+                <th class="bg-light">Ngày mua</th>
+                <!-- <th class="bg-light">Trạng thái</th> -->
+                <th class="bg-light"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="bill in bills | limitTo: pageSize : begin">
+                <td class="text-wrap" style="width: 5rem;">
+                    <input type="checkbox" name="billcheckbox3" value="{{bill}}">
+                </td>
+                <td class="text-wrap" style="width: 10rem;">{{bill.billId}}</td>
+                <td class="text-wrap" style="width: 12rem;">{{bill.customers.fullName}}</td>
+                <td class="text-wrap" style="width: 10rem;">{{bill.phone}}</td>
+                <!-- <td class="text-wrap" style="width: 20rem;">{{bill.address}}</td> -->
+                <td class="text-wrap" style="width: 12rem;">{{bill.users.fullName}}</td>
+                <td class="text-end" style="width: 10rem;">{{bill.totalMoney | currency:"":0}}</td>
+                <td class="text-end" style="width: 10rem;">{{bill.createdDate | date:'dd-MM-yyyy HH:mm:ss a'}}</td>
+                <!-- <td class="text-wrap" style="width: 10rem;">
+                  
+                    <div class="btn btn-outline-warning" ng-if="bill.status == 1">Chờ xác nhận</div>
+                    <div class="btn btn-outline-success" ng-if="bill.status == 2">Chờ giao</div>
+                    <div class="btn btn-outline-primary" ng-if="bill.status == 3">Đang giao</div>
+                    <div class="btn btn-outline-success" ng-if="bill.status == 4">Hoàn thành</div>
+                    <div class="btn btn-outline-info" ng-if="bill.status == 0">Chờ thanh toán</div>
+                    <div class="btn btn-outline-danger" ng-if="bill.status == 5">Hủy</div>
+                </td> -->
+                <td class="text-center" style="width: 6rem;">
+                    <a ng-click="getBillDetail(bill)" ng-if="bill.status > 3" class=""> <i
+                            class="bi bi-eye-fill"></i></a>
+                    <a ng-click="getBillStatus123(bill)" ng-if="bill.status <=3 && bill.status > 0" class=""> <i
+                            class="bi bi-eye-fill"></i></a>
+                    <a ng-click="getBillStatus5(bill)" ng-if="bill.status == 0" class=""> <i
+                            class="bi bi-eye-fill"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- <div class="mt-3">
+    <nav aria-label="Page navigation example">
+        <p class="pagination justify-content-center">Trang: {{pageBill}} / {{pageCountBill}}</p>
+        <ul class="pagination justify-content-center">
+            <li class="page-item"><button ng-click="firstBill()" class="page-link"><i
+                        class="bi bi-chevron-bar-left"></i></button>
+            </li>
+            <li class="page-item"><button ng-click="previousBill()" class="page-link"><i
+                        class="bi bi-chevron-double-left"></i></button></li>
+            <li class="page-item"><button ng-click="nextBill()" class="page-link"><i
+                        class="bi bi-chevron-double-right"></i></button>
+            </li>
+            <li class="page-item"><button ng-click="lastBill()" class="page-link"><i
+                        class="bi bi-chevron-bar-right"></i></button>
+            </li>
+        </ul>
+    </nav>
+</div> -->
+
+<div class="text-end mt-4">
+    <button class="btn btn-outline-danger" ng-click="updateStatusToCancel()">Hủy</button>
+    <button class="btn btn-outline-success" ng-click="updateStatus()">Hoàn thành</button>
+</div>
+<div ng-if="bills.length > 0" class="mt-4 text-center">
+    <p>Trang: {{currentPage}} / {{totalPage}}</p>
+    <button ng-show="currentPage>pageInList" class="btn btn-outline-danger" ng-click="prevListPage()"><i
+            class="bi bi-chevron-double-left"></i></button>
+    <!-- <button ng-hide="currentPage==startListPage" ng-click="prevPage()" class="btn btn-outline-primary"><i
+            class="bi bi-chevron-compact-left"></i></button> -->
+
+    <button class="btn btn-outline-secondary me-2 {{currentPage ==page?'active':''}}" ng-click="selectPage(page)"
+        ng-repeat="page in listPage">{{page}}
+    </button>
+
+    <!-- <button ng-hide="currentPage==endListPage" ng-click="nextPage()" class="btn btn-outline-primary me-2"><i
+            class="bi bi-chevron-compact-right"></i></button> -->
+    <button ng-hide="totalPage<=endListPage" ng-click="nextListPage()" class="btn btn-outline-danger"><i
+            class="bi bi-chevron-double-right"></i></button>
+</div>
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Bluv.snk 2022</span>
+        </div>
+    </div>
+</footer>
+<!-- End of Footer -->

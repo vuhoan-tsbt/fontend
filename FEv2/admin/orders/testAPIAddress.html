@@ -1,0 +1,70 @@
+<!-- test api address -->
+<div>
+    <input type="text" name="" id="" placeholder="Thành phố..." ng-model="divisionName" ng-click="clickDivision()"
+        ng-model-options="{ debounce: 500 }" ng-change="searchDivision(divisionName)">
+    <input type="text" name="" id="" placeholder="Quận/Huyện..." ng-model="districtName" ng-click="clickDistrict()"
+        ng-model-options="{ debounce: 500 }" ng-change="searchDistrict(districtName)">
+    <input type="text" name="" id="" placeholder="Phường/Xã..." ng-model="wardName" ng-click="clickWard()"
+        ng-model-options="{ debounce: 500 }" ng-change="searchWard(wardName)">
+
+</div>
+<div>
+    <!-- <ul style="height: 150px; overflow: auto;">
+        <li ng-repeat="division in lstDivision"> {{division.name}}</li>
+    </ul> -->
+    <select size="10" name="" id="" ng-model="divisionCode" ng-change="changeDivision()"
+        ng-show="sttDivision && lstDivision.length">
+        <option ng-repeat="division in lstDivision" value="{{division.code}}">{{division.name}}</option>
+    </select>
+
+    <select size="10" name="" id="" ng-model="districtCode" ng-change="changeDistrict()"
+        ng-show="sttDistrict && lstDistrict.length">
+        <option ng-repeat="district in lstDistrict" value="{{district.code}}">{{district.name}}</option>
+    </select>
+
+    <select size="10" name="" id="" ng-model="wardNameSelect" ng-change="changeWard()"
+        ng-show="sttWard && lstWard.length">
+        <option ng-repeat="ward in lstWard" value="{{ward.name}}">{{ward.name}}</option>
+    </select>
+</div>
+
+<div>
+    <button ng-click="btnPrintAddress()">Print Address</button>
+    <h3>{{addressOrder}}</h3>
+</div>
+
+<div>
+    <ul class="nav nav-pills product-update mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="nav-table-tab" data-bs-toggle="pill" data-bs-target="#nav-table"
+                type="button" role="tab" aria-controls="pills-home" aria-selected="true">List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="nav-form-tab" data-bs-toggle="pill" data-bs-target="#nav-form" type="button"
+                role="tab" aria-controls="pills-profile" aria-selected="false">Form</button>
+        </li>
+
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="nav-table" role="tabpanel" aria-labelledby="nav-table-tab">
+            table
+        </div>
+
+        <div class="tab-pane fade" id="nav-form" role="tabpanel" aria-labelledby="nav-form-tab">
+            form
+        </div>
+
+    </div>
+
+    <div class="mb-3">
+        <label for="image" class="form-label">UploadImage</label>
+        <input type="file" class="form-control" id="image"
+            onchange="angular.element(this).scope().imageChanged(this.files)">
+    </div>
+
+</div>
+
+<div>
+    <button ng-click="toastSucess()" class="btn btn-success">Success</button>
+    <button ng-click="toastError()" class="btn btn-danger">Error</button>
+</div>

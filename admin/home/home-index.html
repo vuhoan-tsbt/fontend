@@ -1,0 +1,644 @@
+<div id="wrapper">
+    <div ng-show="isLoading" class="loading">
+        <div class="spinner-border text-primary spinner-center" role="status">
+        </div>
+    </div>
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h2 class="h3 mb-0 text-gray-800 text-uppercase">Tổng quan</h2>
+                </div>
+
+                <!-- Content Row -->
+                <div class="row">
+
+                    <div class="row">
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-6 col-md-12 mb-4">
+                            <div class="card border-left-primary shadow h-100">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="text-xs font-weight-bold text-primary text-uppercase fw-bold">Doanh thu
+                                        bán
+                                        hàng trực
+                                        tiếp {{dropdownRevenueDaySelectByOffline.name}}
+                                    </h6>
+                                    <div class="dropdown no-arrow">
+                                        <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-target="#dropdownRevenueDay">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownRevenueDay"
+                                            style="max-height: 180px; overflow: auto;">
+                                            <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                                chọn:</div>
+                                            <a ng-repeat="type in dropdownRevenueDays" class="dropdown-item" href=""
+                                                ng-click="chooseViewRevenueByOffline(type)">{{type.name}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                {{currentReveueDayByOffline}}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-6 col-md-12 mb-4">
+                            <div class="card border-left-success shadow h-100">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="text-xs font-weight-bold text-primary text-uppercase fw-bold">Doanh thu
+                                        bán
+                                        hàng online {{dropdownRevenueDaySelectByOnline.name}}
+                                    </h6>
+                                    <div class="dropdown no-arrow">
+                                        <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-target="#dropdownRevenueDay">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownRevenueDay"
+                                            style="max-height: 180px; overflow: auto;">
+                                            <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                                chọn:</div>
+                                            <a ng-repeat="type in dropdownRevenueDays" class="dropdown-item" href=""
+                                                ng-click="chooseViewRevenueByOnline(type)">{{type.name}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                {{currentReveueDayByOnline}}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="text-xs font-weight-bold text-primary text-uppercase fw-bold">Đơn mua chờ
+                                        xác
+                                        nhận
+                                    </h6>
+                                    <!-- <div class="dropdown no-arrow">
+                                    <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false" data-bs-target="#dropdownRevenueDay">
+                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                        aria-labelledby="dropdownRevenueDay" style="max-height: 180px; overflow: auto;">
+                                        <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                            chọn:</div>
+                                        <a ng-repeat="type in dropdownRevenueDays" class="dropdown-item" href=""
+                                            ng-click="chooseViewRevenueByOffline(type)">{{type.name}}</a>
+                                    </div>
+                                </div> -->
+                                </div>
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                {{countSuccessBill}}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="text-xs font-weight-bold text-info text-uppercase fw-bold">Đơn trả chờ
+                                        xác
+                                        nhận
+                                    </h6>
+                                    <!-- <div class="dropdown no-arrow">
+                                    <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false" data-bs-target="#dropdownRevenueDay">
+                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                        aria-labelledby="dropdownRevenueDay" style="max-height: 180px; overflow: auto;">
+                                        <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                            chọn:</div>
+                                        <a ng-repeat="type in dropdownRevenueDays" class="dropdown-item" href=""
+                                            ng-click="chooseViewRevenueByOnline(type)">{{type.name}}</a>
+                                    </div>
+                                </div> -->
+                                </div>
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{countCancelBill}}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="text-xs font-weight-bold text-success text-uppercase fw-bold">đơn thành
+                                        công
+                                        trong
+                                        {{countSuccessType.name}}
+                                    </h6>
+
+                                    <div class="dropdown no-arrow">
+                                        <a type="button" class="dropdown-toggle text-success" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-target="#dropdownBillInDay">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownBillInDay"
+                                            style="max-height: 180px; overflow: auto;">
+                                            <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                                chọn:</div>
+                                            <a ng-repeat="type in countSuccessTypes" class="dropdown-item" href=""
+                                                ng-click="changeCountSuccessType(type)">{{type.name}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{countSuccess}}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pending Requests Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="text-xs font-weight-bold text-danger text-uppercase fw-bold">đơn hủy
+                                        trong
+                                        {{countCancelType.name}}
+                                    </h6>
+
+                                    <div class="dropdown no-arrow">
+                                        <a type="button" class="dropdown-toggle text-danger" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-target="#dropdownBillInDay">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownBillInDay"
+                                            style="max-height: 180px; overflow: auto;">
+                                            <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                                chọn:</div>
+                                            <a ng-repeat="type in countCancelTypes" class="dropdown-item" href=""
+                                                ng-click="changeCountCancelType(type)">{{type.name}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{countCancel}}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-6 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="text-xs font-weight-bold text-primary text-uppercase fw-bold">Doanh thu
+                                        {{dropdownRevenueDaySelect.name}}
+                                    </h6>
+                                    <div class="dropdown no-arrow">
+                                        <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-target="#dropdownRevenueDay">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownRevenueDay"
+                                            style="max-height: 180px; overflow: auto;">
+                                            <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                                chọn:</div>
+                                            <a ng-repeat="type in dropdownRevenueDays" class="dropdown-item" href=""
+                                                ng-click="chooseViewRevenue(type)">{{type.name}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <!-- <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            Doanh thu ngày hiện tại </div> -->
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <div ng-if="dropdownRevenueDaySelect.type=='aboutDays'">
+                                                    <div class="table-responsive mb-3" style="font-size: 12pt;">
+                                                        <table>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><span>Từ: </span> <input class="form-control"
+                                                                            type="date" ng-model="startDate" date-format
+                                                                            ng-change="changeAboutDay(startDate, endDate)">
+                                                                    </td>
+                                                                    <td>
+                                                                        <span>Đến: </span><input class="form-control"
+                                                                            type="date" ng-model="endDate" date-format
+                                                                            ng-change="changeAboutDay(startDate, endDate)">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr ng-if="errorAboutDay">
+                                                                    <td class="mt-2"
+                                                                        style="color: red; font-style: italic;">
+                                                                        {{errorAboutDay.startDate}}</td>
+                                                                    <td class="mt-2"
+                                                                        style="color: red; font-style: italic;">
+                                                                        {{errorAboutDay.endDate}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                {{currentReveueDay}}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-6 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="text-xs font-weight-bold text-primary text-uppercase fw-bold">Doanh thu
+                                        năm
+                                        {{yearSelected}}
+                                    </h6>
+                                    <div class="dropdown no-arrow">
+                                        <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-target="#dropdownRevenueYear">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownRevenueYear"
+                                            style="max-height: 180px; overflow: auto;">
+                                            <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                                chọn:</div>
+                                            <a ng-repeat="type in listYearInBill" class="dropdown-item" href=""
+                                                ng-click="chooseYearRevenvue(type)">{{type}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <div class="table-responsive">
+                                                    <table class="table" style="font-size: 12pt;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Doanh thu trực tiếp</td>
+                                                                <td>Doanh thu online</td>
+                                                                <td>Tổng doanh thu</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>{{currentYearReveueOffline}}</td>
+                                                                <td>{{currentYearReveueOnline}}</td>
+                                                                <td>{{currentYearReveue}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary text-uppercase fw-bold">Biểu đồ doanh
+                                        thu
+                                        hàng tháng trong năm
+                                        {{yearLineSelected}}
+                                    </h6>
+                                    <div class="dropdown no-arrow">
+                                        <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-target="#dropdownRevenueYear">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownRevenueYear"
+                                            style="max-height: 180px; overflow: auto;">
+                                            <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                                chọn:</div>
+                                            <a ng-repeat="type in listYearInBill" class="dropdown-item" href=""
+                                                ng-click="chooseYearRevenvueLine(type)">{{type}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"></canvas>
+                                    </div>
+                                    <hr>
+                                    <!-- Styling for the area chart can be found in the
+                                <code>/js/demo/chart-area-demo.js</code> file. -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pie Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary text-uppercase fw-bold">Nguồn doanh thu
+                                    </h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <!-- <div class="mt-4 text-center small">
+                                    <span class="mr-2">
+                                        <i class="fas fa-circle text-primary"></i> Direct
+                                    </span>
+                                    <span class="mr-2">
+                                        <i class="fas fa-circle text-success"></i> Social
+                                    </span>
+                                    <span class="mr-2">
+                                        <i class="fas fa-circle text-info"></i> Referral
+                                    </span>
+                                </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Content Column -->
+                        <div class="col-lg-6 mb-4">
+
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary text-uppercase fw-bold">Sản phẩm sắp
+                                        hết
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-3 mt-1">
+                                            <label for="quantity" class="form-label">Số lượng <=: </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="text" ng-model="quantityProductVariant"
+                                                ng-model-options="{ debounce: 1000 }"
+                                                ng-change="findProductVariantByQuantity(quantityProductVariant)"
+                                                class="form-control text-end" id="quantity">
+                                            <div ng-if="errorQuantity.quantity">
+                                                <span
+                                                    style="color: red; font-style: italic;">{{errorQuantity.quantity}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="listProductVariant.length <= 0"
+                                        class="alert alert-danger text-center mt-4" role="alert">
+                                        <span style="color: red; font-style: italic;">Chưa có bản ghi nào</span>
+                                    </div>
+                                    <div class="row table-responsive" style="max-height: 300px;"
+                                        ng-if="listProductVariant.length > 0">
+                                        <table class="table">
+                                            <thead>
+                                                <tr style="position: sticky; top: 0;">
+                                                    <th class="bg-light">Sản phẩm</th>
+                                                    <th class="bg-light">Số lượng</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="pv in listProductVariant">
+                                                    <td>{{pv.products.productName}}</td>
+                                                    <td>{{pv.quantity}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-6 mb-4">
+
+                            <!-- Top sản phẩm -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <div class=" row">
+                                        <h6 class=" font-weight-bold text-primary text-uppercase fw-bold col-sm-6 mt-2">
+                                            Sản phẩm {{sellType.name}} top:</h6>
+                                        <div class="col-sm-2">
+                                            <input type="number" ng-model="sellTop"
+                                                ng-model-options="{ debounce: 1000 }" ng-change="loadTopSell()"
+                                                class="form-control text-end" id="">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <select class="form-select" ng-model="sellDay" ng-change="loadTopSell()">
+                                                <option ng-repeat="day in selectSellDays" ng-value="day">{{day.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown no-arrow">
+                                        <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-target="#dropdownRevenueDay">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownRevenueDay"
+                                            style="max-height: 180px; overflow: auto;">
+                                            <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                                chọn:</div>
+                                            <a ng-repeat="type in sellTypes" class="dropdown-item" href=""
+                                                ng-click="chooseViewSellType(type)">{{type.name}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div ng-if="topProducts.length <= 0" class="alert alert-danger text-center mt-4"
+                                        role="alert">
+                                        <span style="color: red; font-style: italic;">Chưa có bản ghi nào</span>
+                                    </div>
+                                    <div class="row table-responsive" style="max-height: 300px;"
+                                        ng-if="topProducts.length > 0">
+                                        <table class="table">
+                                            <thead>
+                                                <tr style="position: sticky; top: 0;">
+                                                    <th class="bg-light">Sản phẩm</th>
+                                                    <th class="bg-light">Số lượng bán</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="pv in topProducts">
+                                                    <td>{{pv.productVariant.products.productName}}</td>
+                                                    <td>{{pv.quantity}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Approach -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                    <div class=" row">
+                                        <h6 class=" font-weight-bold text-primary text-uppercase fw-bold col-sm-6 mt-2">
+                                            Khách hàng mua top:</h6>
+                                        <div class="col-sm-2">
+                                            <input type="number" ng-model="customerTop"
+                                                ng-model-options="{ debounce: 1000 }" ng-change="changeCustomerTop()"
+                                                class="form-control text-end" id="">
+                                        </div>
+                                        <h6 class=" font-weight-bold text-primary text-uppercase fw-bold col-sm-4 mt-2">
+                                            năm: {{topCustomerYearSelected}}</h6>
+                                    </div>
+                                    <div class="dropdown no-arrow">
+                                        <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false" data-bs-target="#dropdownRevenueDay">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownRevenueYear"
+                                            style="max-height: 180px; overflow: auto;">
+                                            <div class="dropdown-header bg-light" style="position: sticky; top: 0;">Lựa
+                                                chọn:</div>
+                                            <a ng-repeat="type in listYearInBill" class="dropdown-item" href=""
+                                                ng-click="chooseCustomerYearRevenvue(type)">{{type}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div ng-if="lstCustomerTop.length <= 0" class="alert alert-danger text-center mt-4"
+                                        role="alert">
+                                        <span style="color: red; font-style: italic;">Chưa có bản ghi nào</span>
+                                    </div>
+                                    <div class="row table-responsive" style="max-height: 300px;"
+                                        ng-if="lstCustomerTop.length > 0">
+                                        <table class="table">
+                                            <thead>
+                                                <tr style="position: sticky; top: 0;">
+                                                    <th class="bg-light">Tên khách hàng</th>
+                                                    <th class="bg-light">Tổng tiền</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="cus in lstCustomerTop">
+                                                    <td>{{cus.user.fullName}}</td>
+                                                    <td>{{cus.totalMoney}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Bluv.snk 2022</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>

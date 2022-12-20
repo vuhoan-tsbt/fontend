@@ -1,0 +1,238 @@
+<section class="product">
+    <div class="container ">
+        <!-- <div class="row product-top ">
+            <p>Trang chủ</p>
+            <p>Nữ</p>
+            <p>Classic</p>
+        </div> -->
+        <!-- <div class="product-content row"> -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- <div class="product-content-left-big-img ">
+                                <img src="{{detail_product.images[0].src}}" alt="">
+                            </div> -->
+                            <img src="{{detail_product.images[0].src}}" alt="" class="img-fluid border">
+                        </div>
+
+                        <div class="col-3 offset-md-1">
+                            <!-- <div class="product-content-left-small-img">
+                                <img ng-repeat="image in detail_product.images" src="{{image.src}}" alt="">
+                                
+                            </div> -->
+                            <!-- <div class="row"> -->
+                                <img class="img-fluid mt-2 mb-3 border" ng-repeat="image in detail_product.images" src="{{image.src}}" alt="">
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="product-content-right-product-name">
+                        <h1>{{detail_product.name}}</h1>
+                        <p>Mã: 127442-1</p>
+                    </div>
+                    <div class="product-content-right-product-price">
+                        <p>{{detail_product.price | number}} <sup>đ</sup></p>
+                    </div>
+                    <div class="product-content-right-product-color">
+                        <p><span style="font-weight: bold;">Màu sắc</span>: {{detail_product.color}}</p>
+                        
+                    </div>
+                   
+    
+                    <div class="mb-3">
+                        <p style="font-weight: bold;">Size:</p>
+                        <div class="btn-group ms-3" role="group" aria-label="Basic radio toggle button group"
+                            ng-repeat="size in detail_product.size">
+                            <input type="radio" class="btn-check" name="btnradio" id="{{size.id}}" autocomplete="off"
+                                value="{{size.value}}" ng-click="clickSize(size.id,size.value)">
+                            <label class="btn btn-outline-dark" for="{{size.id}}">{{size.value}}</label>
+                        </div>
+                        <p ng-hide="checkValueSize" class="mt-2" style="color: red;">Vui lòng chọn size *</p>
+                    </div>
+    
+                    <div class="quantity">
+                        <p style="font-weight: bold;">Số lượng:</p>
+                        <input type="number" min="0" value="1">
+    
+                    </div>
+    
+                    <div class="product-content-right-product-button">
+                        <button id="btn_addCart"> <i class="bi bi-cart4"></i>
+                            <p>Thêm vào giỏ hàng</p>
+                        </button>
+                    </div>
+                    <div class="product-content-right-product-icon">
+                        <div class="product-content-right-product-icon-items">
+                            <i class="bi bi-telephone"></i>
+                            <p>Hotline</p>
+                        </div>
+                        <div class="product-content-right-product-icon-items">
+                            <i class="bi bi-chat"></i>
+                            <p>Chat</p>
+                        </div>
+                        <div class="product-content-right-product-icon-items">
+                            <i class="bi bi-envelope"></i>
+                            <p>Mail</p>
+                        </div>
+                    </div>
+                    <div class="product-content-right-product-QR">
+                        <img src="/images/qrcode.png" alt="">
+                    </div>
+                </div>
+            <!-- <div class="product-content-left row">
+                <div class="product-content-left-big-img ">
+                    <img src="{{detail_product.images[0].src}}" alt="">
+                </div>
+                <div class="product-content-left-small-img">
+                    <img ng-repeat="image in detail_product.images" src="{{image.src}}" alt="">
+                    
+                </div>
+            </div>
+            <div class="product-content-right">
+                <div class="product-content-right-product-name">
+                    <h1>{{detail_product.name}}</h1>
+                    <p>Mã: 127442-1</p>
+                </div>
+                <div class="product-content-right-product-price">
+                    <p>{{detail_product.price | number}} <sup>đ</sup></p>
+                </div>
+                <div class="product-content-right-product-color">
+                    <p><span style="font-weight: bold;">Màu sắc</span>: {{detail_product.color}}</p>
+                    
+                </div>
+               
+
+                <div class="mb-3">
+                    <p style="font-weight: bold;">Size:</p>
+                    <div class="btn-group ms-3" role="group" aria-label="Basic radio toggle button group"
+                        ng-repeat="size in detail_product.size">
+                        <input type="radio" class="btn-check" name="btnradio" id="{{size.id}}" autocomplete="off"
+                            value="{{size.value}}" ng-click="clickSize(size.id,size.value)">
+                        <label class="btn btn-outline-dark" for="{{size.id}}">{{size.value}}</label>
+                    </div>
+                    <p ng-hide="checkValueSize" class="mt-2" style="color: red;">Vui lòng chọn size *</p>
+                </div>
+
+                <div class="quantity">
+                    <p style="font-weight: bold;">Số lượng:</p>
+                    <input type="number" min="0" value="1">
+
+                </div>
+
+                <div class="product-content-right-product-button">
+                    <button id="btn_addCart"> <i class="bi bi-cart4"></i>
+                        <p>Thêm vào giỏ hàng</p>
+                    </button>
+                </div>
+                <div class="product-content-right-product-icon">
+                    <div class="product-content-right-product-icon-items">
+                        <i class="bi bi-telephone"></i>
+                        <p>Hotline</p>
+                    </div>
+                    <div class="product-content-right-product-icon-items">
+                        <i class="bi bi-chat"></i>
+                        <p>Chat</p>
+                    </div>
+                    <div class="product-content-right-product-icon-items">
+                        <i class="bi bi-envelope"></i>
+                        <p>Mail</p>
+                    </div>
+                </div>
+                <div class="product-content-right-product-QR">
+                    <img src="/images/qrcode.png" alt="">
+                </div>
+            </div> -->
+        </div>
+        <hr>
+
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-thong_tin-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-thong_tin" type="button" role="tab" aria-controls="nav-thong_tin"
+                    aria-selected="true">THÔNG TIN BỔ SUNG</button>
+                <button class="nav-link" id="nav-danh_gia-tab" data-bs-toggle="tab" data-bs-target="#nav-danh_gia"
+                    type="button" role="tab" aria-controls="nav-danh_gia" aria-selected="false">ĐÁNH GIÁ</button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-thong_tin" role="tabpanel"
+                aria-labelledby="nav-thong_tin-tab">
+                <table class="table">
+                    <tr>
+                        <th scope="row">SKU</th>
+                        <td>127442</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">CHẤT LIỆU</th>
+                        <td>Canvas</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">GIỚI TÍNH</th>
+                        <td colspan="2">Nam, Nữ</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="nav-danh_gia" role="tabpanel" aria-labelledby="nav-danh_gia-tab">
+                <div class="danhgia">
+                    <h3 class="normal">Đánh giá</h3>
+                    <p class="">Chưa có đánh giá nào.</p>
+                    <div class="form-danhgia">
+                        <h3 id="reply-title" class="comment-reply-title">Hãy là người đầu tiên nhận xét “Chuck
+                            Taylor Classic”</h3>
+                        <form action="" method="post" id="commentform" class="row" novalidate="">
+                            <div class="col-md-12"><label for="rating">Đánh giá của bạn</label>
+                                <div class="stars">
+                                    <form action="">
+                                        <input class="star star-5" id="star-5" type="radio" name="star" />
+                                        <label class="star star-5" for="star-5"></label>
+                                        <input class="star star-4" id="star-4" type="radio" name="star" />
+                                        <label class="star star-4" for="star-4"></label>
+                                        <input class="star star-3" id="star-3" type="radio" name="star" />
+                                        <label class="star star-3" for="star-3"></label>
+                                        <input class="star star-2" id="star-2" type="radio" name="star" />
+                                        <label class="star star-2" for="star-2"></label>
+                                        <input class="star star-1" id="star-1" type="radio" name="star" />
+                                        <label class="star star-1" for="star-1"></label>
+                                    </form>
+                                </div>
+                                <select name="rating" id="rating" required="" style="display: none;">
+                                    <option value="">Xếp hạng…</option>
+                                    <option value="5">Rất tốt</option>
+                                    <option value="4">Tốt</option>
+                                    <option value="3">Trung bình</option>
+                                    <option value="2">Không tệ</option>
+                                    <option value="1">Rất tệ</option>
+                                </select>
+                            </div>
+                            <p class="col-md-6">
+                            <div>
+                                <label for="comment" class="col-md-6">Nhận xét của bạn
+                                </label>
+                            </div>
+                            <textarea class="col-md-12 comment" id="comment" name="comment" cols="45" rows="4"
+                                required="">
+                                </textarea>
+                            </p>
+                            <div class="col-md-12">
+                                <label for="ten" class="form-label">Tên <sup style="color: red;">*</sup></label>
+                                <input type="text" class="form-control" id="ten">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="email" class="form-label">Email <sup style="color: red;">*</sup></label>
+                                <input type="email" class="form-control" id="email">
+                            </div>
+
+                            <p class="form-submit">
+                                <input name="submit" type="submit" id="submit" class="submit" value="Gửi đi">
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

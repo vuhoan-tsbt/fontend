@@ -1,0 +1,27 @@
+<div ng-show="isLoading" class="loading">
+  <div class="spinner-border text-primary spinner-center" role="status">
+  </div>
+</div>
+
+<h2 class="text-uppercase mt-2">Sản phẩm</h2>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="product-tab" data-bs-toggle="tab" data-bs-target="#product" type="button"
+      role="tab" aria-controls="product" aria-selected="true">Sản phẩm</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="product-variant-tab" data-bs-toggle="tab" data-bs-target="#product-variant"
+      type="button" role="tab" aria-controls="product-variant" aria-selected="false"
+      ng-click="clickTabProductVariant()">Sản phẩm chi tiết</button>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="product" role="tabpanel" aria-labelledby="product-tab"
+    ng-include="'/admin/products/tab-product.html'">
+  </div>
+
+  <div class="tab-pane fade" id="product-variant" role="tabpanel" aria-labelledby="product-variant-tab">
+    <div ng-include="'/admin/products/tab-product-variant.html'"></div>
+  </div>
+</div>

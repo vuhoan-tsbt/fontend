@@ -1,0 +1,242 @@
+<div ng-show="isLoading" class="loading">
+  <div class="spinner-border text-primary spinner-center" role="status">
+  </div>
+</div>
+
+<h2 class="text-uppercase mt-5 mb-3">Quản lý tài khoản</h2>
+
+<div class="row mb-4">
+  <button class="btn btn-outline-primary col-xl-1 mb-2" ng-click="activeCreateUser()"><i class="bi bi-plus me-2"></i>Tài
+    khoản</button>
+  <div class="col-xl-1 offset-xl-8 mb-2">
+    <select name="" id="pageSize" class="form-select" ng-change="repaginate(pageSize)" ng-model="pageSize"
+      convert-to-number>
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+      <option value="40">40</option>
+
+    </select>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <input class="form-control" type="text" placeholder="Tìm kiếm từ số điện thoại hoặc email" ng-model="txtSearchUser"
+    ng-change="searchUserByPhoneOrEmail(txtSearchUser)" ng-model-options="{debounce : 500}">
+</div>
+
+<div ng-if="users.length <= 0" class="alert alert-danger text-center mt-4" role="alert">
+  <span style="color: red; font-style: italic;">Chưa có bản ghi nào</span>
+</div>
+<div class="table-responsive border rounded row" style="max-height: 500px; overflow: auto;" ng-if="users.length > 0">
+  <table class="table">
+    <thead>
+      <tr style="position: sticky; top: 0;">
+        <th class="bg-light">#</th>
+        <th class="bg-light">Họ tên</th>
+        <th class="bg-light">Email</th>
+        <th class="bg-light">Số điện thoại</th>
+        <th class="bg-light">Giới tính</th>
+        <th class="bg-light">Vai trò</th>
+        <th class="bg-light">Trạng thái</th>
+        <th class="bg-light"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in users | limitTo: pageSize : begin">
+        <td>
+          <strong>{{$index+1}}</strong>
+        </td>
+        <td>{{user.fullName}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.phone}}</td>
+        <td ng-if="user.sex == 1">Nam</td>
+        <td ng-if="user.sex == 0">Nữ</td>
+        <td>
+          <div class="text-secondary fw-bold" ng-if="user.role == 1">Khách hàng</div>
+          <div class="text-primary fw-bold" ng-if="user.role == 2">Nhân viên</div>
+          <div class="text-success fw-bold" ng-if="user.role == 3">Quản trị viên</div>
+        </td>
+        <td>
+          <div ng-if="user.status == 2">
+            <span class="text-danger fw-bold">Chưa kích hoạt</span>
+          </div>
+          <div ng-if="user.status != 2" class="form-check form-switch">
+            <input class="form-check-input" ng-checked="user.status == 1" ng-click="showConfirmUserStatusChange($index)"
+              type="checkbox">
+          </div>
+        </td>
+        <td>
+          <a class="btn btn-outline-primary" ng-click="getUserId(user.userId)">Sửa</a>
+          <a class="btn btn-outline-danger" ng-click="deleteUser(user.userId)">Xóa</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div ng-if="users.length > 0" class="mt-4 text-center">
+  <p>Trang: {{currentPage}} / {{totalPage}}</p>
+  <button ng-show="currentPage>pageInList" class="btn btn-outline-danger" ng-click="prevListPage()"><i
+      class="bi bi-chevron-double-left"></i></button>
+  <!-- <button ng-hide="currentPage==startListPage" ng-click="prevPage()" class="btn btn-outline-primary"><i
+          class="bi bi-chevron-compact-left"></i></button> -->
+
+  <button class="btn btn-outline-secondary me-2 {{currentPage ==page?'active':''}}" ng-click="selectPage(page)"
+    ng-repeat="page in listPage">{{page}}
+  </button>
+
+  <!-- <button ng-hide="currentPage==endListPage" ng-click="nextPage()" class="btn btn-outline-primary me-2"><i
+          class="bi bi-chevron-compact-right"></i></button> -->
+  <button ng-hide="totalPage<=endListPage" ng-click="nextListPage()" class="btn btn-outline-danger"><i
+      class="bi bi-chevron-double-right"></i></button>
+</div>
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>Copyright &copy; Bluv.snk 2022</span>
+    </div>
+  </div>
+</footer>
+<!-- End of Footer -->
+<!-- modal create user -->
+<div style="z-index: 1500;" class="modal fade modal-option" id="exampleModalCreateUser" tabindex="-1"
+  aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog modal-dialog-centered">
+    <div ng-show="isLoading" class="loading">
+      <div class="spinner-border text-primary spinner-center" role="status">
+      </div>
+    </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title d-flex justify-content-center" id="exampleModalLabel">Thêm mới</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Họ tên:</label>
+            <input type="text" class="form-control" id="full-name1" ng-model="user.fullName" />
+            <div>
+              <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.fullName}}</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Email:</label>
+            <input type="text" class="form-control" id="email" ng-model="user.email" />
+            <div>
+              <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.email}}</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Mật khẩu:</label>
+            <input type="password" class="form-control" id="Password" ng-model="user.password" />
+            <div>
+              <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.password}}</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Số điện thoại:</label>
+            <input type="text" class="form-control" id="Phone1" ng-model="user.phone" />
+            <div>
+              <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.phone}}</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label>Giới tính:</label>
+            <input id="made1" type="radio" class="form-check-input col-sm-3 offset-1" value="1" name="sex"
+              ng-checked="user.sex == 1" ng-model="user.sex" />
+            <label for="made">Nam</label>
+            <input id="female" type="radio" class="form-check-input col-sm-3 offset-3" value="0" name="sex"
+              ng-checked="user.sex == 0" ng-model="user.sex" />
+            <label for="female">Nữ</label>
+          </div>
+          <div class="mb-3">
+            <label class="form-lable" for="">Vai trò:</label>
+            <select class="form-control" name="" id="role" ng-model="user.role">
+              <option value="1" ng-selected="user.role == 1">Khách hàng</option>
+              <option value="2" ng-selected="user.role == 2">Nhân viên</option>
+              <option value="3" ng-selected="user.role == 3">Quản trị viên</option>
+            </select>
+            <div>
+              <span ng-if="messageRole != ''" style="color: red; font-style: italic;">{{messageRole}}</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-outline-primary" ng-click="onAddUser()">Thêm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal update user -->
+<div style="z-index: 1500;" class="modal fade modal-option" id="exampleModalUpdateUser" tabindex="-1"
+  aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog modal-dialog-centered">
+    <div ng-show="isLoading" class="loading">
+      <div class="spinner-border text-primary spinner-center" role="status">
+      </div>
+    </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title d-flex justify-content-center" id="exampleModalLabel">Chỉnh sửa tài khoản</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Họ tên:</label>
+            <input type="text" class="form-control" id="full-name" ng-model="user.fullName" />
+            <div>
+              <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.fullName}}</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Email:</label>
+            <input type="text" class="form-control" id="email1" ng-model="user.email" />
+            <div>
+              <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.email}}</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Số điện thoại:</label>
+            <input type="text" class="form-control" id="Phone" ng-model="user.phone" />
+            <div>
+              <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.phone}}</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label>Giới tính:</label>
+            <input id="made" type="radio" class="form-check-input col-sm-3 offset-1" value="1" name="sex"
+              ng-checked="user.sex == 1" ng-model="user.sex" />
+            <label for="made">Nam</label>
+            <input id="female0" type="radio" class="form-check-input col-sm-3 offset-3" value="0" name="sex"
+              ng-checked="user.sex != 1" ng-model="user.sex" />
+            <label for="female0">Nữ</label>
+          </div>
+          <div class="mb-3">
+            <label class="form-lable" for="">Vai trò:</label>
+            <select class="form-control" name="" id="" ng-model="user.role">
+              <option value="1" ng-selected="user.role == 1">Khách hàng</option>
+              <option value="2" ng-selected="user.role == 2">Nhân viên</option>
+              <option value="3" ng-selected="user.role == 3">Quản trị viên</option>
+            </select>
+            <div>
+              <span ng-if="messageError.role != ''" style="color: red; font-style: italic;">{{messageRole}}</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+        <a class="btn btn-outline-danger" ng-click="resetPassword(user)">Khôi phục mật khẩu</a>
+        <button type="button" class="btn btn-outline-primary" ng-click="onEditUser()">Cập nhật</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="container">
+    <h1>Test input động</h1>
+
+    <div ng-repeat="option in question.options" class="input-group mb-3">
+        <label>{{$index+1}}</label>
+
+        <input class="form-control" type="text" ng-model="option.name_option" ng-change="change()" />
+        <input class="form-control" type="text" ng-model="option.value_option" ng-change="change()" />
+        
+        <button class="btn btn-danger" type="button" ng-click="del($index)">Del Row</button>
+        <br />
+    </div>
+    <div class="input-group">
+        <label>{{question.options.length + 1}}</label>
+        <!-- <input class="form-control" type="text" ng-model="question.option_new.name_option" /> -->
+        <select class="form-select" aria-label="Default select example" ng-model="question.option_new.name_option" ng-change="changeoption()">
+            <option ng-repeat="itemOption in options" value="{{itemOption.id}}">{{itemOption.name}}</option>
+        </select>
+        <!-- <input class="form-control" type="text" ng-model="question.option_new.value_option" /> -->
+        <select class="form-select" aria-label="Default select example" ng-model="question.option_new.value_option">
+            <option ng-repeat="itemOption_value in option_values" value="{{itemOption_value.id}}">{{itemOption_value.name}}</option>
+        </select>
+        <button class="btn btn-primary" type="button" ng-click="add()">Add Row</button>
+        <br />
+    </div>
+    <hr>
+    <div style='margin-bottom: 10px;'>SHOWING THE MODELS UPDATING:</div>
+    <div style='margin-bottom: 10px;'>OPTIONS: {{question.options}}</div>
+    <div>OPTION_NEW:{{question.option_new}}</div>
+</div>

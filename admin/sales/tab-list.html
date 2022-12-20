@@ -1,0 +1,515 @@
+<div class="row mt-4">
+    <div class="col-xl-1 offset-xl-8 mb-2">
+      <select name="" id="pageSize" class="form-select" ng-change="repaginate(pageSize)" ng-model="pageSize"
+        convert-to-number>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+      </select>
+    </div>
+</div>
+<div class="row mt-3 table-responsive">
+    <table class="table table-hover table-scrollable">
+        <thead class="bg-light">
+            <tr>               
+                <th scope="col">Tên chương trình khuyến mãi</th>
+                <th scope="col">Ngày bắt đầu</th>
+                <th scope="col">Ngày kết thúc</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="sale in listSale | limitTo: pageSize : begin"">           
+                <td>{{sale.saleName}}</td>
+                <td>{{sale.startDate | date:'dd-MM-yyyy hh:mm a'}}</td>
+                <td>{{sale.endDate | date:'dd-MM-yyyy hh:mm a'}}</td>
+                <td>{{sale.createdDate | date:'dd-MM-yyyy hh:mm a'}}</td>
+                <td>
+                    <div class="btn btn-outline-warning rounded-pill" ng-if="sale.status == 0" ata-bs-toggle="tooltip"
+                        data-bs-placement="bottom" title="Dừng hoạt động">Chưa hoạt động</div>
+                    <div class="btn btn-outline-success rounded-pill" ng-if="sale.status == 1" ata-bs-toggle="tooltip"
+                        data-bs-placement="bottom" title="Dừng hoạt động">Đang hoạt động</div>
+                    <div class="btn btn-outline-danger rounded-pill" ng-if="sale.status == 2">Ngưng hoạt động</div>
+                </td>
+                <td>
+                    <button class="btn btn-outline-primary rounded-pill" ng-click="chooseSale(sale)">Chọn</button>
+                    <button class="btn btn-outline-danger rounded-pill" ng-click="deleteSaleParent(sale)">Xóa</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div ng-if="listSale.length > 0" class="mt-4 text-center">
+    <p>Trang: {{currentPage}} / {{totalPage}}</p>
+    <button ng-show="currentPage>pageInList" class="btn btn-outline-danger" ng-click="prevListPage()"><i
+        class="bi bi-chevron-double-left"></i></button>
+
+    <button class="btn btn-outline-secondary me-2 {{currentPage ==page?'active':''}}" ng-click="selectPage(page)"
+      ng-repeat="page in listPage">{{page}}
+    </button>
+  
+    <button ng-hide="totalPage<=endListPage" ng-click="nextListPage()" class="btn btn-outline-danger"><i
+        class="bi bi-chevron-double-right"></i></button>
+ </div>
+
+<div class="modal fade" id="modalChooseSale" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div ng-show="isLoadingModal" class="loading">
+        <div class="spinner-border text-primary spinner-center" role="status">
+        </div>
+    </div>
+    <div class="modal-dialog modal-xl modal-dialog-scrollable ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{saleName}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-10">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-outline-primary"
+                            ng-click="openModalChoosePv(saleReturn)">Chọn sản phẩm</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <form class="row g-3">
+                            <div class="mb-3">
+                                <label for="salename" class="form-label"><b>Tên chương trình khuyến mãi:</b></label>
+                                <input type="text" class="form-control" id="salename" ng-model="saleReturn.saleName">
+                                <div class="mt-1">
+                                    <span ng-if="messages != ''"
+                                        style="color: red; font-style: italic;">{{messages.saleName}}</span>
+                                </div>
+                            </div>
+                            <label for="saletype" class="form-label"><b>Loại khuyến mãi:</b></label>
+                            <div class="row">
+                                <div class="form-check col-4 ms-3"">
+                                    <input class=" form-check-input" type="radio" name="flexRadioDefault"
+                                    id="discount0" ng-checked="saleReturn.discountType==0"
+                                    ng-model="saleReturn.discountType" value="0">
+                                    <label class="form-check-label" for="discount0">
+                                        VNĐ
+                                    </label>
+                                </div>
+                                <div class="form-check col-4 ms-3 me-5"">
+                                    <input class=" form-check-input" type="radio" name="flexRadioDefault"
+                                    id="discount1" ng-checked="saleReturn.discountType==1"
+                                    ng-model="saleReturn.discountType" value="1">
+                                    <label class="form-check-label" for="discount1">
+                                        %
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <label for="discount" class="form-label"><b>Discount:</b></label>
+                                <input type="text" class="form-control" id="discount" ng-model="saleReturn.discount">
+                                <div class="mt-1">
+                                    <span ng-if="messages != ''"
+                                        style="color: red; font-style: italic;">{{messages.discount}}</span>
+                                </div>
+                            </div>
+                            <div class="row mt-2" ng-if="saleReturn.saleType == 0">
+                                <div class="col-md-6">
+                                    <label for="startdate" class="form-label"><b>Ngày bắt đầu:</b></label>
+                                    <input type="datetime-local" class="form-control" id="startdate"
+                                        ng-model="saleReturn.startDate" date-format>
+                                    <div class="mt-1">
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.startDate}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="enddate" class="form-label"><b>Ngày kết thúc:</b></label>
+                                    <input type="datetime-local" class="form-control" id="enddate"
+                                        ng-model="saleReturn.endDate" date-format>
+                                    <div class="mt-1">
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.endDate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3" ng-if="saleReturn.saleType == 1">
+                                
+                                <label class="form-label col-10"><b>Thứ khuyến mãi</b></label>
+                                <button class="col-2 btn btn-outline-primary" ng-show = "listSaleChild.length <= 5" ng-click = "openModalCreateSaleChid()">Thêm mới</button>
+                                <table class="table table-hover table-responsive mt-2">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th scope="col">Thứ</th>
+                                            <th scope="col">Ngày bắt đầu</th>
+                                            <th scope="col">Ngày kết thúc</th>
+                                            <th scope="col">Giờ bắt đầu</th>
+                                            <th scope="col">Giờ kết thúc</th>
+                                            <th scope="col">Trạng thái</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="sale in listSaleChild">
+                                            <td>
+                                                <p ng-if="sale.weekday == 1">Thứ hai</p>
+                                                <p ng-if="sale.weekday == 2">Thứ ba</p>
+                                                <p ng-if="sale.weekday == 3">Thứ tư</p>
+                                                <p ng-if="sale.weekday == 4">Thứ năm</p>
+                                                <p ng-if="sale.weekday == 5">Thứ sáu</p>
+                                                <p ng-if="sale.weekday == 6">Thứ bảy</p>
+                                                <p ng-if="sale.weekday == 7">Chủ nhật</p>
+                                            </td>
+                                            <td>{{sale.startDate | date:'dd-MM-yyyy '}}</td>
+                                            <td>{{sale.endDate | date:'dd-MM-yyyy'}}</td>
+                                            <td>{{sale.startAt}}</td>
+                                            <td>{{sale.endAt}}</td>
+                                            <td>
+                                                <p ng-if="sale.status == 0" class="text-warning fw-bold">Chưa hoạt động
+                                                </p>
+                                                <p ng-if="sale.status == 1" class="text-success fw-bold">Đang hoạt động
+                                                </p>
+                                                <p ng-if="sale.status == 2" class="text-danger fw-bold">Ngưng hoạt động
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <a ng-click="openModalEditSaleChid(sale)"><i
+                                                        class="bi bi-pencil-square"></i></a>
+                                                <a ng-click="deleteSaleChid(sale)"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-6">
+                                    <label for="discount" class="form-label"><b>Người tạo:</b></label>
+                                    <input type="text" class="form-control" id="discount"
+                                        ng-model="saleReturn.createdUser.fullName" disabled>
+                                </div>
+                                <div class="col-6">
+                                    <label for="startdate" class="form-label"><b>Ngày tạo:</b></label>
+                                    <input type="datetime-local" class="form-control" ng-model="saleReturn.createdDate"
+                                        date-format disabled>
+                                </div>
+                            </div>
+                            <div class="row mt-2" ng-if="saleReturn.updatedUser">
+                                <div class="col-6">
+                                    <label for="discount" class="form-label"><b>Người chỉnh sửa:</b></label>
+                                    <input type="text" class="form-control" ng-model="saleReturn.updatedUser.fullName"
+                                        disabled>
+                                </div>
+                                <div class="col-6">
+                                    <label for="startdate" class="form-label"><b>Ngày chỉnh sửa:</b></label>
+                                    <input type="datetime-local" class="form-control" ng-model="saleReturn.updateDate"
+                                        date-format disabled>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                    <div class="col-4">
+                        <div class="mt-3">
+                            <span ng-if="messages != ''"
+                                style="color: red; font-style: italic;">{{messages.listProductVariants}}</span>
+                        </div>
+                        <div class="row mt-3">
+                            <table class="table">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Sản phẩm</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="product in listProductOnPromotion">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{product.products.productName}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" ng-click="updateSale()">Lưu </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal choose product -->
+<div class="modal fade" id="modalChooseProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div ng-show="isLoadingModal" class="loading">
+        <div class="spinner-border text-primary spinner-center" role="status">
+        </div>
+    </div>
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{saleReturn.saleName}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-3 border rounded">
+
+                    <div class="col-md-4 mt-3">
+                        <h6 class="text-center mb-3"><b>Dòng sản phẩm</b></h6>
+                        <div class="table-responsive" style="height: 300px; overflow: auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr class="bg-light">
+                                        <th scope="col"><input type="checkbox"
+                                                ng-click="clickSelectAllProductAnSale(selectedAllProduct)"
+                                                ng-model="selectedAllProduct"></th>
+                                        <th scope="col">Tên dòng sản phẩm</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="pro in listProduct">
+                                        <td><input type="checkbox" ng-click="changeSelectProductBySaleOld($index)"
+                                                name="selectedProductUpdate" value="{{pro}}">
+                                        </td>
+                                        <td>{{pro.productName}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-7 mt-3">
+                        <h6 class="text-center mb-3"><b>Danh sách sản phẩm</b></h6>
+                        <div class="table-responsive" style="height: 300px; overflow: auto;">
+                            <table class="table">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th scope="col"><input type="checkbox"
+                                                ng-click="clickSelectAllProductVariantAnSale(selectedAllProductVariant)"
+                                                ng-model="selectedAllProductVariant"></th>
+                                        <th scope="col">Tên sản phẩm</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="pv in listProductVariant">
+                                        <td><input type="checkbox" ng-click="selectedProductVariantUpdate($index)"
+                                                name="selectedProductVariantUpdate" value="{{pv}}"></td>
+                                        <td>{{pv.products.productName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-sencondary" ng-click="closeModalChoosePv()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit sale Chid -->
+<div class="modal fade" id="modalEditSaleChild" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div ng-show="isLoadingModal" class="loading">
+        <div class="spinner-border text-primary spinner-center" role="status">
+        </div>
+    </div>
+    <div class="modal-dialog modal-xl  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật khuyến mãi</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-3 table-responsive" style="max-height: 200px; overflow: auto;">
+                    <table>
+                        <thead>
+                            <tr style="position: sticky; top: 0;">
+                                <th class="bg-light">Thứ</th>
+                                <th class="bg-light">Ngày bắt đầu</th>
+                                <th class="bg-light">Ngày kết thúc</th>
+                                <th class="bg-light">Giờ bắt đầu</th>
+                                <th class="bg-light">Giờ kết thúc</th>
+                                <th class="bg-light"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="saleReturn1">
+                                <td style="width: 8rem;">
+                                    <select class="form-select" ng-model="saleReturn1.weekday" style="width: 8rem;">
+                                        <option ng-value="1" selected>Thứ 2</option>
+                                        <option ng-value="2">Thứ 3</option>
+                                        <option ng-value="3">Thứ 4</option>
+                                        <option ng-value="4">Thứ 5</option>
+                                        <option ng-value="5">Thứ 6</option>
+                                        <option ng-value="6">Thứ 7</option>
+                                        <option ng-value="7">Chủ nhật</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="datetime-local" class="form-control" ng-model="saleReturn1.startDate"
+                                        date-format>
+                                </td>
+                                <td>
+                                    <input type="datetime-local" class="form-control" ng-model="saleReturn1.endDate"
+                                        date-format>
+                                </td>
+                                <td>
+                                    <input type="time" class="form-control" ng-model="saleReturn1.startAt" date-format>
+                                </td>
+                                <td>
+                                    <input type="time" class="form-control" ng-model="saleReturn1.endAt" date-format>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.weekDay}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.startDate}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.endDate}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.startAt}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.endAt}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" ng-click="updateSaleChiled()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal create sale Chid -->
+<div class="modal fade" id="modalCreateSaleChild" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div ng-show="isLoadingModal" class="loading">
+        <div class="spinner-border text-primary spinner-center" role="status">
+        </div>
+    </div>
+    <div class="modal-dialog modal-xl  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm mới khuyến mãi</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-3 table-responsive" style="max-height: 200px; overflow: auto;">
+                    <table>
+                        <thead>
+                            <tr style="position: sticky; top: 0;">
+                                <th class="bg-light">Thứ</th>
+                                <th class="bg-light">Ngày bắt đầu</th>
+                                <th class="bg-light">Ngày kết thúc</th>
+                                <th class="bg-light">Giờ bắt đầu</th>
+                                <th class="bg-light">Giờ kết thúc</th>
+                                <th class="bg-light"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="saleChild">
+                                <td style="width: 8rem;">
+                                    <select class="form-select" ng-model="saleChild.weekday" style="width: 8rem;">
+                                        <option ng-value="1" selected>Thứ 2</option>
+                                        <option ng-value="2">Thứ 3</option>
+                                        <option ng-value="3">Thứ 4</option>
+                                        <option ng-value="4">Thứ 5</option>
+                                        <option ng-value="5">Thứ 6</option>
+                                        <option ng-value="6">Thứ 7</option>
+                                        <option ng-value="7">Chủ nhật</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="datetime-local" class="form-control" ng-model="saleChild.startDate"
+                                        date-format>
+                                </td>
+                                <td>
+                                    <input type="datetime-local" class="form-control" ng-model="saleChild.endDate"
+                                        date-format>
+                                </td>
+                                <td>
+                                    <input type="time" class="form-control" ng-model="saleChild.startAt" date-format>
+                                </td>
+                                <td>
+                                    <input type="time" class="form-control" ng-model="saleChild.endAt" date-format>
+                                </td>
+                            </tr>
+                            <tr ng-if="messages">
+                                <td>
+                                    <div>
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.weekDay}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.startDate}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.endDate}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.startAt}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span ng-if="messages != ''"
+                                            style="color: red; font-style: italic;">{{messages.endAt}}</span>
+                                    </div>
+                                </td>                               
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" ng-click="createSaleChild()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>

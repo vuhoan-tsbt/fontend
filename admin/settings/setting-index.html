@@ -1,0 +1,362 @@
+<div ng-show="isLoading" class="loading">
+    <div class="spinner-border text-primary spinner-center" role="status">
+    </div>
+</div>
+<h2 class="text-uppercase">Cài đặt chung</h2>
+
+<div class="table-responsive mt-5">
+    <table class="table table-striped">
+        <tr>
+            <td class="fw-bold">Email</td>
+            <td>{{setting.email}}</td>
+            <td><button class="btn btn-outline-success" ng-click="openModal('email')">Thay đổi email</button></td>
+            <td><button class="btn btn-outline-primary" ng-click="openModal('testEmail')" style="width: 100px;">Test
+                    email</button></td>
+        </tr>
+        <tr>
+            <td class="fw-bold">Số điện thoại</td>
+            <td>{{setting.phoneShop}}</td>
+            <td><button class="btn btn-outline-success" ng-click="openModal('phone')">Thay đổi số điện thoại</button>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="fw-bold">Ngân hàng</td>
+            <td>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Chủ tài khoản</th>
+                                <th>Ngân hàng</th>
+                                <th>Số tài khoản</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{setting.bank.accountHolder}}</td>
+                                <td>{{setting.bank.bankName}}</td>
+                                <td>{{setting.bank.accountNumber}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+            <td><button class="btn btn-outline-success" ng-click="openModal('bank')">Thay đổi ngân hàng</button>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="fw-bold">Thành phố/Tỉnh</td>
+            <td>{{setting.divisionName}}</td>
+            <td><button class="btn btn-outline-success" ng-click="openModelUpdteAddress()">Thay đổi địa chỉ</button>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="fw-bold">Quận/Huyện</td>
+            <td>{{setting.districtName}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="fw-bold">Phường/Xã</td>
+            <td>{{setting.wardName}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="fw-bold">Địa chỉ chi tiết</td>
+            <td>{{setting.addressDetail}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="fw-bold">Cập nhật cuối cùng bởi</td>
+            <td>{{setting.userEdit.fullName}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="fw-bold">Thời gian cập nhật cuối cùng</td>
+            <td>{{setting.updateDay | date:'dd-MM-yyyy hh:mm a'}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="fw-bold">Lịch sử cập nhật</td>
+            <td colspan="2">
+                <div class="table-responsive rounded" style="max-height: 230px; overflow: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr style="position: sticky; top: 0;">
+                                <th class="bg-light">Nội dung chỉnh sửa</th>
+                                <th class="bg-light">Thời gian chỉnh sửa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="his in histories">
+                                <td class="text-warp">{{his.description}}</td>
+                                <td>{{his.createdDate | date:'dd-MM-yyyy hh:mm a'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Bluv.snk 2022</span>
+        </div>
+    </div>
+</footer>
+<!-- End of Footer -->
+
+<!-- Modal update phone -->
+<div class="modal fade" id="modalUpdateEmail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div ng-show="isLoading" class="loading">
+            <div class="spinner-border text-primary spinner-center" role="status">
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Thay đổi số Email</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="emailAddress" class="form-label">Địa chỉ email:</label>
+                    <input type="text" class="form-control" ng-model="email.email" id="emailAddress"
+                        placeholder="Mời bạn nhập địa chỉ email">
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.email}}</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="passwordUpdate" class="form-label">Mật khẩu email:</label>
+                    <input type="password" class="form-control" ng-model="email.password" id="passwordUpdate"
+                        placeholder="Mời bạn nhập password">
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.password}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" ng-click="submit('updateEmail')">Lưu</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal update phone -->
+<div class="modal fade" id="modalUpdatePhone" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div ng-show="isLoading" class="loading">
+            <div class="spinner-border text-primary spinner-center" role="status">
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Thay đổi số điện thoại</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label for="phoneNumber" class="form-label">Số điện thoại mới:</label>
+                    <input type="text" class="form-control" ng-model="phoneNumber" id="phoneNumber"
+                        placeholder="Mời bạn nhập số điện thoại mới">
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.phone}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" ng-click="submit('updatePhone')">Lưu</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal update bank -->
+<div class="modal fade" id="modalUpdateBank" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div ng-show="isLoading" class="loading">
+            <div class="spinner-border text-primary spinner-center" role="status">
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Thay đổi thông tin ngân hàng</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="bankName" class="form-label">Ngân hàng :</label>
+                    <select name="" id="bankName" class="form-select" ng-model="bank.bankName"
+                        ng-options="item as item.name for item in listBank track by item.id">
+                    </select>
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.bankName}}</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="accountNumber" class="form-label">Số tài khoản: </label>
+                    <input type="text" class="form-control" ng-model="bank.accountNumber" id="accountNumber"
+                        placeholder="Mời bạn nhập số tài khoản">
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.accountNumber}}</span>
+                    </div>
+                </div>
+                <div>
+                    <label for="accountHolder" class="form-label">Chủ tài khoản:</label>
+                    <input type="text" class="form-control" ng-model="bank.accountHolder" id="accountHolder"
+                        placeholder="Mời bạn nhập tên chủ tài khoản">
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.accountHolder}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" ng-click="submit('updateBank')">Lưu</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Modal update address -->
+<div class="modal fade" id="staticBackdropUpdateAddress" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div ng-show="isLoading" class="loading">
+                <div class="spinner-border text-primary spinner-center" role="status">
+                </div>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Cập nhật địa chỉ cửa hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <label class="form-label">Tỉnh/Thành phố:</label>
+                    <select class="form-control" ng-model="division" ng-change="changeDivision(division)"
+                        ng-click="clickDivisionOnSelect()"
+                        ng-options="division as division.ProvinceName for division in lstDivision track by division.ProvinceID">
+                        <option value="" ng-click="clickNullDivision()">Tỉnh/Thành phố</option>
+                    </select>
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.divisionName}}</span>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <label class="form-label">Quận/Huyện:</label>
+                    <select class="form-control" ng-model="district" ng-change="changeDistrict(district)"
+                        ng-click="clickDistrictOnSelect()"
+                        ng-options="district as district.DistrictName for district in lstDistrict track by district.DistrictID">
+                        <option value="" ng-click="clickNullDistrict()">Quận/Huyện</option>
+                    </select>
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.districtName}}</span>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <label class="form-label">Xã/Phường:</label>
+                    <select class="form-control" ng-model="ward" ng-change="changeWard(ward)"
+                        ng-click="clickWardOnSelect()"
+                        ng-options="ward as ward.WardName for ward in lstWard track by ward.WardCode">
+                        <option value="" ng-click="clickNullWard()">Xã/Phường</option>
+                    </select>
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.wardName}}</span>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <label class="form-label">Địa chỉ chi tiết:</label>
+                    <input ng-model="address.addressDetail" class="form-control">
+                </div>
+                <div>
+                    <span ng-if="messageAddress != ''" style="color: red; font-style: italic;">{{messageAddress}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" ng-click="submit('updateAddress')">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal test email -->
+<div class="modal fade" id="modalTestEmail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div ng-show="isLoading" class="loading">
+            <div class="spinner-border text-primary spinner-center" role="status">
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Test Email</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="emailAddress" class="form-label">Địa chỉ email nhận:</label>
+                    <input type="text" class="form-control" ng-model="testEmail.to" id="emailAddress"
+                        placeholder="Mời bạn nhập địa chỉ email nhận">
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.to}}</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="passwordUpdate" class="form-label">Tiêu đề email:</label>
+                    <input type="text" class="form-control" ng-model="testEmail.subject" id="passwordUpdate"
+                        placeholder="Mời bạn nhập tiêu đề">
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.subject}}</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="passwordUpdate" class="form-label">Nội dung email:</label>
+                    <textarea class="form-control" placeholder="Mời bạn nhập nội dung" cols="30" rows="10"
+                        ng-model="testEmail.content"></textarea>
+                    <div ng-if="messageError">
+                        <span style="color: red; font-style: italic;">{{messageError.content}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" ng-click="submit('testEmail')">Test</button>
+            </div>
+        </div>
+
+    </div>
+</div>

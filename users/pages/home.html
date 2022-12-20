@@ -1,0 +1,68 @@
+<div class="container">
+    <ul class="nav nav-tabs product-update nav-justified" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button"
+                role="tab" aria-controls="new" aria-selected="true">SẢN PHẨM MỚI</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="selling-tab" data-bs-toggle="tab" data-bs-target="#selling" type="button"
+                role="tab" aria-controls="selling" aria-selected="false">SẢN PHẨM BÁN CHẠY</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="common-tab" data-bs-toggle="tab" data-bs-target="#common" type="button"
+                role="tab" aria-controls="common" aria-selected="false">SẢN PHẨM PHỔ BIẾN</button>
+        </li>
+    </ul>
+    <div class="tab-content mt-5" id="myTabContent">
+        <div class="tab-pane fade show active" id="new" role="tabpanel" aria-labelledby="new-tab">
+
+            <div class="row">
+                <div class="col-sm-6 col-md-5 col-lg-4 col-xl-3 mt-4 product-item" ng-repeat="item in list_products">
+                    <div class="card card-product-item" style="width: 18rem;">
+                        <a href="#!detail-product/{{item.id}}"><img src="{{item.images[0].src}}" class="card-img-top img-fluid"></a>
+                        <div class="card-body text-center">
+                            <h5><a href="#!detail-product/{{item.id}}" class="link-item-product">{{item.name}}</a></h5>
+                            <p class="text-danger fw-bold">{{item.price | number}} ₫</p>
+                            <div class="btn-addcart">
+                                <a class="btn btn-danger fw-bold" style="font-size: 8pt;" href="">THÊM VÀO GIỎ HÀNG</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="selling" role="tabpanel" aria-labelledby="selling-tab">Sản phẩm bán chạy</div>
+        <div class="tab-pane fade" id="common" role="tabpanel" aria-labelledby="common-tab">Sản phẩm phổ biến</div>
+    </div>
+</div>
+
+
+<div class="container mt-5">
+
+    <h5 class="fw-bold text-center">SẢN PHẨM GIẢM GIÁ</h5>
+    <hr style="height: 2px; color: #000; background-color: #000;">
+    <div class="mt-4">
+        <div class="row">
+            
+            <div class="row">
+                <div class="col-sm-6 col-md-5 col-lg-4 col-xl-3 mt-4 product-item" ng-repeat="item in list_products">
+                    <div class="card card-product-item" style="width: 18rem;">
+                        <a href="#!detail-product/{{item.id}}"><img src="{{item.images[0].src}}" class="card-img-top img-fluid"></a>
+                        <div class="card-body text-center">
+                            <h5><a href="#!detail-product/{{item.id}}" class="link-item-product">{{item.name}}</a></h5>
+                            <p class="text-danger fw-bold">{{item.price | number}} ₫</p>
+                            <div class="btn-addcart">
+                                <a class="btn btn-danger fw-bold" style="font-size: 8pt;" href="">THÊM VÀO GIỎ HÀNG</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

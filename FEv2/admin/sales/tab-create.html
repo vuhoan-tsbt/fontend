@@ -1,0 +1,239 @@
+<div class="row border rounded mt-3">
+    <div class="mt-3">
+        <label for="salename" class="form-label"><b>Tên chương trình khuyến mãi:</b></label>
+        <input type="text" class="form-control" id="salename" ng-model="form.saleName">
+        <div class="mt-1">
+            <span ng-if="messages != ''" style="color: red; font-style: italic;">{{messages.saleName}}</span>
+        </div>
+    </div>
+    <div class="">
+        <div class="row">
+            <div class="col-lg-2 mt-3">
+                <label for="saletype" class="form-label"><b>Loại khuyến mãi:</b></label>
+                <div class="row mt-1">
+                    <div class="form-check col-4 ms-3">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                            ng-model="form.discountType" ng-value="0">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            VNĐ
+                        </label>
+                    </div>
+                    <div class="form-check col-4 ms-3 me-5">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                            ng-model="form.discountType" ng-value="1">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            %
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mt-3">
+                <label for="txtdiscount" class="form-label"><b>Discount:</b></label>
+                <input type="number" class="form-control" id="txtdiscount" ng-model="form.discount">
+                <div class="mt-1">
+                    <span ng-if="messages != ''" style="color: red; font-style: italic;">{{messages.discount}}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- <div class="row mb-3 mt-3">
+        <label class="col-sm-2"><b>Hiệu lực</b></label>
+        <div class="row mt-1">
+            <div class="col-sm-4 row">
+                <label for="startdate" class="col-sm-2 col-form-label"><b>Từ</b></label>
+                <div class="col-sm-10">
+                  <input type="datetime-local" class="form-control" id="startdate" ng-model="form.startDate" date-format>
+                </div>
+                <div class="mt-1">
+                    <span ng-if="messages != ''" style="color: red; font-style: italic;">{{messages.startDate}}</span>
+                </div>
+            </div>
+            <div class="col-sm-4 row">
+                <label for="endtdate" class="col-sm-2 col-form-label"><b>đến</b></label>
+                <div class="col-sm-10">
+                  <input type="datetime-local" class="form-control" id="enddate" ng-model="form.endDate" date-format>
+                </div>
+                <div class="mt-1">
+                    <span ng-if="messages != ''" style="color: red; font-style: italic;">{{messages.endDate}}</span>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="row  mt-3">
+        <div class="col-xl-2 mt-3 mb-3">
+            <label for="" class="form-label"><b>Lựa chọn:</b></label>
+            <select class="form-select" aria-label="Default select example" ng-model="form.saleType">
+                <option ng-value="0">Khoảng ngày</option>
+                <option ng-value="1">Thứ hằng tuần</option>
+            </select>
+        </div>
+        <div class="col-xl-9 row" ng-if="form.saleType==0">
+            <div class="row">
+                <div class="col-md-6 mt-3 mb-3">
+                    <label for="startdate" class="form-label"><b>Ngày bắt đầu:</b></label>
+                    <input type="datetime-local" class="form-control" id="startdate" ng-model="form.startDate"
+                        date-format>
+                    <div class="mt-1">
+                        <span ng-if="messages != ''"
+                            style="color: red; font-style: italic;">{{messages.startDate}}</span>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-3 mb-3">
+                    <label for="enddate" class="form-label"><b>Ngày kết thúc:</b></label>
+                    <input type="datetime-local" class="form-control" id="enddate" ng-model="form.endDate" date-format>
+                    <div class="mt-1">
+                        <span ng-if="messages != ''" style="color: red; font-style: italic;">{{messages.endDate}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-10" ng-if="form.saleType==1">
+            <div class="mt-3">
+                <span ng-if="messages != ''" style="color: red; font-style: italic;">{{messages.lstSaleChild}}</span>
+            </div>
+            <div class="row mt-3 table-responsive" style="max-height: 200px; overflow: auto;">
+                <table>
+                    <thead>
+                        <tr style="position: sticky; top: 0;">
+                            <th class="bg-light">Thứ</th>
+                            <th class="bg-light">Ngày bắt đầu</th>
+                            <th class="bg-light">Ngày kết thúc</th>
+                            <th class="bg-light">Giờ bắt đầu</th>
+                            <th class="bg-light">Giờ kết thúc</th>
+                            <th class="bg-light"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="option in lstOptionDay">
+                            <td style="width: 8rem;">
+                                <select class="form-select" aria-label="Default select example"
+                                    ng-model="option.optionDay.weekday" style="width: 8rem;">
+                                    <option ng-value="1">Thứ 2</option>
+                                    <option ng-value="2">Thứ 3</option>
+                                    <option ng-value="3">Thứ 4</option>
+                                    <option ng-value="4">Thứ 5</option>
+                                    <option ng-value="5">Thứ 6</option>
+                                    <option ng-value="6">Thứ 7</option>
+                                    <option ng-value="7">Chủ nhật</option>
+                                </select>
+                                <div class="mt-1">
+                                    <span ng-if="messages != ''"
+                                        style="color: red; font-style: italic;">{{messages['weekDay' + ($index + 1)]}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="datetime-local" class="form-control" ng-model="option.optionDay.startDate"
+                                    date-format>
+                                <div>
+                                    <span ng-if="messages != ''"
+                                        style="color: red; font-style: italic;">{{messages['startDate' + ($index + 1)]}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="datetime-local" class="form-control" ng-model="option.optionDay.endDate"
+                                    date-format>
+                                <div class="mt-1">
+                                    <span ng-if="messages != ''"
+                                        style="color: red; font-style: italic;">{{messages['endDate' + ($index + 1)]}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="time" class="form-control" ng-model="option.optionDay.startAt" date-format>
+                                <div class="mt-1">
+                                    <span ng-if="messages != ''"
+                                        style="color: red; font-style: italic;">{{messages['startAt' + ($index + 1)]}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="time" class="form-control" ng-model="option.optionDay.endAt" date-format>
+                                <div class="mt-1">
+                                    <span ng-if="messages != ''"
+                                        style="color: red; font-style: italic;">{{messages['endAt' + ($index + 1)]}}</span>
+                                </div>
+                            </td>
+                            <td><i class="fa-solid fa-trash-can" ng-click="delOptionInList($index)"></i></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="" ng-show="lstOptionDay.length < 5">
+                <button class="btn btn-outline-primary btn-add mt-2 mb-3" ng-click="addOption()">+</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+<div class="mt-3">
+    <span ng-if="messages != ''" style="color: red; font-style: italic;">{{messages.listProductVariants}}</span>
+</div>
+<div class="row mt-3 border rounded">
+
+    <div class="col-md-4 mt-3">
+        <h6 class="text-center mb-3"><b>Dòng sản phẩm</b></h6>
+        <div class="table-responsive" style="max-height: 300px; overflow: auto;">
+            <table class="table">
+                <thead>
+                    <tr style="position: sticky; top: 0;">
+                        <th class="bg-light" scope="col"><input type="checkbox"
+                                ng-click="clickSelectAllProduct(selectedAllProduct)" ng-model="selectedAllProduct">
+                        </th>
+                        <th class="bg-light" scope="col">Tên dòng sản phẩm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="pro in listProduct">
+                        <td><input type="checkbox" ng-click="changeSelectProduct($index)" name="selectedProduct"
+                                value="{{pro}}">
+                        </td>
+                        <td>{{pro.productName}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-7 mt-3">
+        <h6 class="text-center mb-3"><b>Danh sách sản phẩm</b></h6>
+        <div class="table-responsive" style="max-height: 300px; overflow: auto;">
+            <table class="table">
+                <thead>
+                    <tr style="position: sticky; top: 0;">
+                        <th class="bg-light" scope="col"><input type="checkbox"
+                                ng-click="clickSelectAllProductVariant(selectedAllProductVariant)"
+                                ng-model="selectedAllProductVariant"></th>
+                        <th class="bg-light" scope="col">Tên sản phẩm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="pv in listProductVariant">
+                        <td><input type="checkbox" ng-click="changeSelectProductVariant()" name="selectedProductVariant"
+                                value="{{pv}}"></td>
+                        <td>
+                            <button type="button" class="btn position-relative border-0" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="{{pv.saleName}}">
+                                {{pv.products.productName}}
+                                <span ng-if="pv.countSale>0"
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{pv.countSale}}
+                                </span>
+                            </button>
+                            <!-- {{pv.products.productName}}
+                            <span ng-if="pv.countSale>0" class="badge rounded-pill text-bg-danger">{{pv.countSale}}</span> -->
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row col-lg-1 mt-3 offset-lg-10 mb-3">
+    <button type="submit" class="btn btn-outline-primary" ng-click="createdSale()">Tạo</button>
+</div>

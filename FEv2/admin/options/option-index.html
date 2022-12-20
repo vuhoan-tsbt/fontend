@@ -1,0 +1,505 @@
+<div ng-show="isLoading" class="loading">
+  <div class="spinner-border text-primary spinner-center" role="status">
+  </div>
+</div>
+
+<h2 class="text-uppercase mt-5 mb-3">Thuộc tính</h2>
+
+<div class="mb-4">
+  <button class="btn btn-outline-success mb-2" ng-click="activeCreateOpt()"><i class="bi bi-plus me-2"></i>Thêm
+    mới</button>
+  <div class="mb-2">
+    <select name="" id="pageSize" class="form-select" ng-change="repaginate(pageSize)" ng-model="pageSize"
+      convert-to-number>
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+      <option value="40">40</option>
+      <option value="50">50</option>
+    </select>
+  </div>
+</div>
+
+<div class="mb-4">
+  <input class="form-control" type="text" placeholder="Tìm kiếm theo tên" ng-model="txtSearchOption"
+    ng-change="searchOptionByName(txtSearchOption)" ng-model-options="{debounce : 500}">
+</div>
+
+
+<div ng-if="options.length <= 0" class="alert alert-danger text-center mt-4" role="alert">
+  <span style="color: red; font-style: italic;">Chưa có bản ghi nào</span>
+</div>
+<div class="table-responsive border rounded mt-5" style="max-height: 500px; overflow: auto;" ng-if="options.length > 0">
+  <table class="table table-striped table-inverse text-nowraple">
+    <thead>
+      <tr style="position: sticky; top: 0;">
+        <th class="bg-light text-black-50">Tên thuộc tính</th>
+        <th class="bg-light text-black-50">Được phép hiển thị ?</th>
+        <th class="bg-light text-black-50">Trạng thái</th>
+        <th class="bg-light text-black-50"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="opt in options | limitTo: pageSize : begin">
+        <td style="width: 30rem;">{{opt.optionName}}</td>
+        <td>
+          <div style="width: 8rem;" class="text-success fw-bold" ng-if="opt.isShow == 1">Có</div>
+          <div style="width: 8rem;" class="text-danger fw-bold" ng-if="opt.isShow == 0">Không</div>
+        </td>
+        <td>
+          <div class="form-check form-switch">
+            <input class="form-check-input" ng-checked="opt.status == 1"
+              ng-click="showConfirmOptionStatusChange($index)" type="checkbox">
+          </div>
+        </td>
+        <td><a class="btn btn-outline-primary" ng-click="getOptionId(opt.optionId)">Chỉnh sửa</a>
+          <a class="btn btn-outline-danger" ng-click="checkDeleteOption(opt.optionId)">Xóa</a>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div ng-if="options.length > 0" class="mt-4 text-center">
+  <p>Trang: {{currentPage}} / {{totalPage}}</p>
+  <button ng-show="currentPage>pageInList" class="btn btn-outline-danger" ng-click="prevListPage()"><i
+      class="bi bi-chevron-double-left"></i></button>
+  <!-- <button ng-hide="currentPage==startListPage" ng-click="prevPage()" class="btn btn-outline-primary"><i
+          class="bi bi-chevron-compact-left"></i></button> -->
+
+  <button class="btn btn-outline-secondary me-2 {{currentPage ==page?'active':''}}" ng-click="selectPage(page)"
+    ng-repeat="page in listPage">{{page}}
+  </button>
+
+  <!-- <button ng-hide="currentPage==endListPage" ng-click="nextPage()" class="btn btn-outline-primary me-2"><i
+          class="bi bi-chevron-compact-right"></i></button> -->
+  <button ng-hide="totalPage<=endListPage" ng-click="nextListPage()" class="btn btn-outline-danger"><i
+      class="bi bi-chevron-double-right"></i></button>
+</div>
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>Copyright &copy; Bluv.snk 2022</span>
+    </div>
+  </div>
+</footer>
+<!-- End of Footer -->
+
+<!-- modal create option -->
+<div style="z-index: 1500;" class="modal fade modal-option" id="exampleModalCreateOpt" tabindex="-1"
+  aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div ng-show="isLoading" class="loading">
+      <div class="spinner-border text-primary spinner-center" role="status">
+      </div>
+    </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title d-flex justify-content-center" id="exampleModalLabel">Thêm mới thuộc tính</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label" for="optionValueName">Tên thuộc tính:</label>
+          <input type="text" class="form-control" id="optionValueName" ng-model="option.optionName"
+            placeholder="Mời bạn nhập tên thuộc tính">
+          <div>
+            <span ng-if="messageError"
+              style="color: red; font-style: italic;">{{messageError['option.optionName']}}</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="isShowCreate" ng-checked="option.isShow"
+              ng-model="option.isShow" ng-true-value="1" ng-false-value="0">
+            <label class="form-check-label" for="isShowCreate">
+              Được phép hiển thị ?
+            </label>
+            <div>
+              <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.isShow}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mt-3 mb-4">
+            <button class="btn btn-secondary col-12 text-start border-0 text-dark fw-bold"
+              style="background-color: gainsboro;" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseOvCreate" aria-expanded="false" aria-controls="collapseExample"
+              ng-click="showOV()">
+              <i class="bi bi-caret-up" ng-if="show == 0"></i>
+              <i class="bi bi-caret-down" ng-if="show == 1"></i>
+              Danh sách giá trị đi kèm
+            </button>
+            <div class="collapse" style="border: 1.6px solid gray; border-top: 0px; border-radius: 0 0 10px 10px;"
+              id="collapseOvCreate">
+              <div class="card card-body" style="max-height: 400px; overflow-x: auto;">
+                <div class="mb-3">
+                  <label class="form-label" for="optionValueName">Giá trị:</label>
+                  <div class="mb-2">
+                    <span style="color: red; font-style: italic;"">Ngăn cách giữa các giá trị là phím " enter"</span>
+                  </div>
+                  <input class="form-control" type="text" ng-keydown="addOvToList($event, option)"
+                    ng-model="optionValueCreate.valueName" placeholder="Mời bạn nhập giá trị thuộc tính">
+                  <div class="mt-2">
+                    <span ng-if="messageErrorValueName"
+                      style="color: red; font-style: italic;">{{messageErrorValueName}}</span>
+                  </div>
+                </div>
+
+                <div ng-if="listValueCreate.length <= 0" class="alert alert-danger text-center mt-4" role="alert">
+                  <span style="color: red; font-style: italic;">Chưa có bản ghi nào</span>
+                </div>
+                <div class="table-responsive" ng-if="listValueCreate.length>0">
+                  <table class="table table-striped table-inverse text-nowrap">
+                    <thead>
+                      <tr style="position: sticky; top: 0;">
+                        <th class="bg-light text-black-50">Giá trị</th>
+                        <th class="bg-light text-black-50">Được phép hiển thị ?</th>
+                        <th class="bg-light text-black-50"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="ov in listValueCreate">
+                        <td>{{ov.valueName}}
+                          <div>
+                            <span ng-if="messageError"
+                              style="color: red; font-style: italic;">{{messageError['optionValues['+$index+'].valueName']}}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <input class="form-check-input" type="checkbox" value="" id="isShowUpdate"
+                            ng-checked="ov.isShow" ng-model="ov.isShow" ng-true-value="1" ng-false-value="0">
+                        </td>
+                        <td><i ng-click="deleteOvInListCreate($index)" class="bi bi-trash3"></i></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- <div class="row col-2 m-1">
+                  <button type="button" class="btn btn-outline-success mb-2" ng-click="openModalAddOV()">
+                    Thêm mới
+                  </button>
+                </div> -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-outline-primary" ng-click="onAddOption()">Tạo mới</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- modal update option -->
+<div style="z-index: 1500;" class="modal fade modal-option" id="exampleModalUpdateOpt" tabindex="-1"
+  aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div ng-show="isLoading" class="loading">
+      <div class="spinner-border text-primary spinner-center" role="status">
+      </div>
+    </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title d-flex justify-content-center" id="exampleModalLabel">Cập nhật thuộc tính</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label" for="optionValueName">Tên thuộc tính:</label>
+          <input type="text" class="form-control" id="optionValueName" ng-model="option.optionName"
+            placeholder="Mời bạn nhập tên thuộc tính">
+          <div>
+            <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.optionName}}</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="isShowUpdate" ng-checked="option.isShow"
+              ng-model="option.isShow" ng-true-value="1" ng-false-value="0">
+            <label class="form-check-label" for="isShowUpdate">
+              Được phép hiển thị ?
+            </label>
+          </div>
+          <div class="mt-3 float-right">
+            <button type="button" class="btn btn-outline-success float-right" ng-click="onEditOption()">Lưu</button>
+          </div>
+        </div>
+
+        <hr>
+        <div class="row">
+          <div class="mt-3 mb-4">
+            <button class="btn btn-secondary col-12 text-start border-0 text-dark fw-bold"
+              style="background-color: gainsboro;" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseOption" aria-expanded="false" aria-controls="collapseExample"
+              ng-click="showOV()">
+              <i class="bi bi-caret-up" ng-if="show == 0"></i>
+              <i class="bi bi-caret-down" ng-if="show == 1"></i>
+              Danh sách giá trị
+            </button>
+            <div class="collapse" style="border: 1.6px solid gray; border-top: 0px; border-radius: 0 0 10px 10px;"
+              id="collapseOption">
+              <div class="card card-body" style="max-height: 300px; overflow-x: auto;">
+                <div ng-if="optionValues.length <= 0" class="alert alert-danger text-center mt-4" role="alert">
+                  <span style="color: red; font-style: italic;">Chưa có bản ghi nào</span>
+                </div>
+                <div class="table-responsive" ng-if="optionValues.length > 0">
+                  <table class="table table-striped table-inverse text-nowrap">
+                    <thead class="thead-inverse">
+                      <tr style="position: sticky; top: 0;">
+                        <th class="bg-light text-black-50">Giá trị</th>
+                        <th class="bg-light text-black-50">Được phép hiển thị ?</th>
+                        <th class="bg-light text-black-50">Trạng thái</th>
+                        <th class="bg-light text-black-50"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="ov in optionValues">
+                        <td>{{ov.valueName}}</td>
+                        <td>
+                          <div style="width: 8rem;" class="text-success fw-bold" ng-if="ov.isShow == 1">
+                            Có</div>
+                          <div style="width: 8rem;" class="text-danger fw-bold" ng-if="ov.isShow == 0">
+                            Không</div>
+                        </td>
+                        <td>
+                          <div class="form-check form-switch ">
+                            <input class="form-check-input" ng-checked="ov.status == 1" type="checkbox"
+                              id="flexSwitchCheckDefault" ng-click="showConfirmOptionValueStatusChangeV2($index)">
+                          </div>
+                        </td>
+                        <td>
+                          <a class="btn btn-success" ng-click="getOptionValueIdV2(ov.valueId)">Sửa</a>
+                          <a class="btn btn-danger" ng-click="checkDeleteOptionValueV2(ov.valueId)">Xóa</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- <div class="row col-2 m-1">
+                  <button type="button" class="btn btn-outline-success mb-2" ng-click="openModalAddOV()">
+                    Thêm mới
+                  </button>
+                </div> -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mt-3 mb-4">
+            <button class="btn btn-secondary col-12 text-start border-0 text-dark fw-bold"
+              style="background-color: gainsboro;" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseCreateOv" aria-expanded="false" aria-controls="collapseExample"
+              ng-click="showOV()">
+              <i class="bi bi-caret-up" ng-if="show == 0"></i>
+              <i class="bi bi-caret-down" ng-if="show == 1"></i>
+              Thêm mới giá trị
+            </button>
+            <div class="collapse" style="border: 1.6px solid gray; border-top: 0px; border-radius: 0 0 10px 10px;"
+              id="collapseCreateOv">
+              <div class="card card-body" style="max-height: 500px; overflow-x: auto;">
+                <div class="mb-3">
+                  <label class="form-label" for="optionValueName">Giá trị:</label>
+                  <div class="mb-2">
+                    <span style="color: red; font-style: italic;">Ngăn cách giữa các giá trị là phím "enter"</span>
+                  </div>
+                  <input class="form-control" type="text" ng-keydown="addOvToList($event, option)"
+                    ng-model="optionValueCreate.valueName" placeholder="Mời bạn nhập giá trị thuộc tính">
+                  <div>
+                    <span ng-if="messageErrorValueName"
+                      style="color: red; font-style: italic;">{{messageErrorValueName}}</span>
+                  </div>
+                </div>
+                <div ng-if="listValueCreate.length <= 0" class="alert alert-danger text-center mt-4" role="alert">
+                  <span style="color: red; font-style: italic;">Chưa có bản ghi nào</span>
+                </div>
+                <div class="table-responsive" ng-if="listValueCreate.length>0">
+                  <table class="table table-striped table-inverse text-nowrap">
+                    <thead>
+                      <tr style="position: sticky; top: 0;">
+                        <th bg-light text-black-50>Giá trị</th>
+                        <th bg-light text-black-50>Được phép hiển thị ?</th>
+                        <th bg-light text-black-50></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="ov in listValueCreate">
+                        <td>{{ov.valueName}}
+                          <div>
+                            <span ng-if="messageError"
+                              style="color: red; font-style: italic;">{{messageError['listOptionValues['+$index+'].valueName']}}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <input class="form-check-input" type="checkbox" value="" id="isShowUpdate"
+                            ng-checked="ov.isShow" ng-model="ov.isShow" ng-true-value="1" ng-false-value="0">
+                        </td>
+                        <td><i ng-click="deleteOvInListCreate($index)" class="bi bi-trash3"></i></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="row col-2 m-1" ng-if="listValueCreate.length>0">
+                  <button type="button" class="btn btn-outline-success mb-2 float-end" ng-click="onAddOptionValue()">
+                    Thêm mới
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal update option value -->
+<div style="z-index: 1500;" class="modal fade modal-option" id="exampleModalUpdateOv" tabindex="-1"
+  aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center" id="exampleModalLabel">Cập nhật giá trị thuộc tính</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          ng-click="closeUpdateOptionValue()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label" for="optionValueName">Giá trị thuộc tính</label>
+          <input type="text" class="form-control" id="optionValueName" ng-model="optionValue.valueName">
+          <div>
+            <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.valueName}}</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="isShowUpadeOv" ng-checked="optionValue.isShow"
+              ng-model="optionValue.isShow" ng-true-value="1" ng-false-value="0">
+            <label class="form-check-label" for="isShowUpadeOv">
+              Allowed to show
+            </label>
+            <div>
+              <span ng-if="messageError" style="color: red; font-style: italic;">{{messageError.isShow}}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+          ng-click="closeUpdateOptionValue()">Close</button>
+        <button type="button" class="btn btn-success" ng-click="onEditOptionValueV2()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal delete option value -->
+<div class="modal fade" id="exampleModalDeleteVariantValues" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div ng-show="isLoading" class="loading">
+      <div class="spinner-border text-primary spinner-center" role="status">
+      </div>
+    </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Xác nhận</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          ng-click="closeModalDeleteImage()"></button>
+      </div>
+      <div class="modal-body">
+        Bạn có chắc chắn xóa thuộc tính không ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+          ng-click="closeModalDeleteImage()">Đóng</button>
+        <button type="button" class="btn btn-outline-danger" ng-click="deleteVariantValues()">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="option-tab" data-bs-toggle="tab" data-bs-target="#option" type="button"
+        role="tab" aria-controls="option" aria-selected="true">Options</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#option-value" type="button"
+        role="tab" aria-controls="profile" aria-selected="false">Option value</button>
+    </li>
+  </ul>
+  <div class="tab-content mt-3" id="myTabContent"> -->
+
+<!-- option -->
+<!-- <div class="tab-pane fade show active" id="option" role="tabpanel" aria-labelledby="option-tab">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="option-list-tab" data-bs-toggle="tab" data-bs-target="#option-list"
+            type="button" role="tab" aria-controls="option-list" aria-selected="true">Option List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="option-crud-tab" data-bs-toggle="tab" data-bs-target="#option-crud" type="button"
+            role="tab" aria-controls="option-crud" aria-selected="false">Option CRUD</button>
+        </li>
+      </ul>
+      <div class="tab-content mt-3" id="myTabContent"> -->
+<!-- option list -->
+<!-- <div class="tab-pane fade show active" id="option-list" role="tabpanel" aria-labelledby="option-list-tab"
+          ng-include="'/admin/options/tab-option-list.html'">
+  
+        </div> -->
+
+<!-- option crud -->
+<!-- <div class="tab-pane fade" id="option-crud" role="tabpanel" aria-labelledby="option-crud-tab"
+          ng-include="'/admin/options/tab-option-CRUD.html'"></div>
+      </div>
+  
+    </div> -->
+
+<!-- option value -->
+<!-- <div class="tab-pane fade" id="option-value" role="tabpanel" aria-labelledby="profile-tab">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="option-value-list-tab" data-bs-toggle="tab" data-bs-target="#option-value-list"
+            type="button" role="tab" aria-controls="home" aria-selected="true">Option Value List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="option-value-crud-tab" data-bs-toggle="tab" data-bs-target="#option-value-crud"
+            type="button" role="tab" aria-controls="profile" aria-selected="false">Option Value CRUD</button>
+        </li>
+      </ul>
+      <div class="tab-content mt-3" id="myTabContent"> -->
+
+<!-- option value list -->
+<!-- <div class="tab-pane fade show active" id="option-value-list" role="tabpanel"
+          aria-labelledby="option-value-list-tab" ng-include="'/admin/options/tab-optionValue-list.html'"></div> -->
+
+<!-- option value crud -->
+<!-- <div class="tab-pane fade" id="option-value-crud" role="tabpanel" aria-labelledby="option-value-crud-tab"
+          ng-include="'/admin/options/tab-optionValue-CRUD.html'"></div>
+      </div>
+  
+    </div>
+  </div> -->

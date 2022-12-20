@@ -1,0 +1,179 @@
+<div class="container">
+  <div ng-show="isLoading" class="loading">
+    <div class="spinner-border text-primary spinner-center" role="status">
+    </div>
+  </div>
+  <div class="main-body">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+        <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+      </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+
+    <div class="row gutters-sm">
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle"
+                width="150">
+              <div class="mt-3">
+                <h4 ng-bind="user.fullName"></h4>
+                <p class="text-secondary mb-1">Vai trò: {{user.role==3?'Quản trị viên':user.role==2?'Nhân viên':'Khách
+                  hàng'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Họ tên</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{user.fullName}}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Email</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{user.email}}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Số điện thoại</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{user.phone}}
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-sm-12">
+                <a class="btn btn-outline-primary mt-3" ng-click="openModalEdit()" href="">Chỉnh sửa thông tin cá
+                  nhân</a>
+                <a class="btn btn-outline-danger mt-3" data-bs-toggle="modal" data-bs-target="#editPasswordBackdrop"
+                  href="">Thay đổi mật khẩu</a>
+              </div>
+
+            </div>
+            <!-- test input enter -->
+            <!-- <input class="" type="text" ng-keydown="action($event)" ng-model="valueinput">
+            <button ng-repeat="value in listValue" type="button" class="btn btn-primary position-relative me-2">
+              {{value}}
+              <span ng-click="removeValue($index)"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                x
+              </span>
+            </button> -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="editBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+              aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div ng-show="isLoading" class="loading">
+                  <div class="spinner-border text-primary spinner-center" role="status">
+                  </div>
+                </div>
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Thay đổi thông tin cá nhân</h1>
+                    <button type="button" id="closeChangeProfile" class="btn-close" data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div>
+                        <label for="recipient-name" class="col-form-label">Họ tên:</label>
+                        <input type="text" ng-model="userEdit.fullName" class="form-control" id="recipient-name">
+                      </div>
+                      <div>
+                        <label for="recipient-name" class="col-form-label">Email:</label>
+                        <input type="text" ng-model="userEdit.email" class="form-control" id="recipient-name">
+                      </div>
+                      <div>
+                        <label for="recipient-name" class="col-form-label">Số điện thoại:</label>
+                        <input type="text" ng-model="userEdit.phone" class="form-control" id="recipient-name">
+                      </div>
+                      <div>
+                        <label for="formFile" class="form-label">Avatar:</label>
+                        <input class="form-control" type="file" id="formFile">
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-outline-primary" ng-click="edit()">Lưu</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="editPasswordBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+              tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div ng-show="isLoading" class="loading">
+                  <div class="spinner-border text-primary spinner-center" role="status">
+                  </div>
+                </div>
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Thay đổi mật khẩu</h1>
+                    <button type="button" id="closeChangeProfile" class="btn-close" data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div>
+                        <label for="recipient-name" class="col-form-label">Mật khẩu cũ:</label>
+                        <input type="password" class="form-control" ng-model="changePassword.passwordOld"
+                          id="recipient-name" placeholder="Mời bạn nhập mật khẩu cũ">
+                        <p ng-if="error.passwordOld != null" class="text-danger">{{error.passwordOld}}</p>
+                      </div>
+                      <div>
+                        <label for="recipient-name" class="col-form-label">Mật khẩu mới:</label>
+                        <input type="password" class="form-control" ng-model="changePassword.passwordNew"
+                          id="recipient-name" placeholder="Mời bạn nhập mật khẩu mới">
+                        <p ng-if="error.passwordNew != null" class="text-danger">{{error.passwordNew}}</p>
+                      </div>
+                      <div>
+                        <label for="recipient-name" class="col-form-label">Xác nhận mật khẩu mới:</label>
+                        <input type="password" class="form-control" ng-model="changePassword.confirmPassword"
+                          id="recipient-name" placeholder="Mời bạn nhập xác nhận mật khẩu">
+                        <p ng-if="error.confirmPassword != null" class="text-danger">{{error.confirmPassword}}</p>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-outline-primary" ng-click="editPassword()">Lưu</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+      <div class="copyright text-center my-auto">
+        <span>Copyright &copy; Bluv.snk 2022</span>
+      </div>
+    </div>
+  </footer>
+  <!-- End of Footer -->

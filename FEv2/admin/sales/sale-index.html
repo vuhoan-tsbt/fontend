@@ -1,0 +1,26 @@
+<div ng-show="isLoading" class="loading">
+    <div class="spinner-border text-primary spinner-center" role="status">
+    </div>
+</div>
+
+<h3 class="mt-2 mb-3 text-uppercase">Chương trình khuyến mãi</h3>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="create-tab" data-bs-toggle="tab" data-bs-target="#create" type="button"
+            role="tab" aria-controls="create" aria-selected="true">Tạo mới</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button ng-click="initializSale()" class="nav-link" id="list-tab" data-bs-toggle="tab" data-bs-target="#list"
+            type="button" role="tab" aria-controls="list" aria-selected="false">Danh sách</button>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="create" role="tabpanel" aria-labelledby="create-tab"
+        ng-include="'/admin/sales/tab-create.html'">
+    </div>
+
+    <div class="tab-pane fade" id="list" role="tabpanel" aria-labelledby="list-tab">
+        <div ng-include="'/admin/sales/tab-list.html'"></div>
+    </div>
+</div>
