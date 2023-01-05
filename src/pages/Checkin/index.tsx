@@ -44,32 +44,31 @@ export default () => {
   };
 
   return (
-    data && (
-      <>
-        <Row>
-          <Col>
-            {data.entryTime == 'null' ? (
-              <Button
-                type="primary"
-                onClick={onCheckin}
-                className={styles.addButton}
-              >
-                Checkin
-              </Button>
-            ) : data.timeout == 'null' ? (
-              <Button
-                type="dashed"
-                onClick={onCheckout}
-                className={styles.addButton}
-              >
-                Checkout
-              </Button>
-            ) : (
-              <></>
-            )}
-          </Col>
-        </Row>
-        {data.entryTime != 'null' && (
+    <>
+      <Row>
+        <Col>
+          {data == 0 ? (
+            <Button
+              type="primary"
+              onClick={onCheckin}
+              className={styles.addButton}
+            >
+              Checkin
+            </Button>
+          ) : data == 1 ? (
+            <Button
+              type="dashed"
+              onClick={onCheckout}
+              className={styles.addButton}
+            >
+              Checkout
+            </Button>
+          ) : (
+            <> Da check out truoc do</>
+          )}
+        </Col>
+      </Row>
+      {/* {data.entryTime != 'null' && (
           <Row style={{ marginTop: 16 }}>
             <Col>
               Thời gian checkin{' '}
@@ -84,8 +83,7 @@ export default () => {
               {moment(data.timeout).format('YYYY-MM-DD HH:mm')}
             </Col>
           </Row>
-        )}
-      </>
-    )
+        )} */}
+    </>
   );
 };
