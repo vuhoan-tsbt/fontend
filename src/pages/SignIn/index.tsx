@@ -46,30 +46,30 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.loginWrap}>
-      <h1>Chấm công</h1>
+      <h1>CRM - D13CNPM7</h1>
       {!isForgot ? (
         <Form
           onFinish={onFinish}
           layout="vertical"
           initialValues={{
-            phone_number: 'vuhoan485@gmail.com',
-            password: 'hoan10a8',
+            phone_number: '',
+            password: '',
           }}
         >
           <Form.Item
             className={styles.formItem}
-            label={t('user_or_phone_number')}
+            label={t('email')}
             name="phone_number"
             rules={[
               {
                 required: true,
                 message: t('error.require', {
-                  field: t('user_or_phone_number'),
+                  field: t('email'),
                 }),
               },
             ]}
           >
-            <Input type="text" placeholder={t('user_or_phone_number')} />
+            <Input type="text" placeholder={t('email')} />
           </Form.Item>
 
           <Form.Item
