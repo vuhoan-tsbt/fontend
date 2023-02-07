@@ -75,43 +75,39 @@ const Sidebar = ({
     }
     if (authObj.role === 'ADMIN') {
       setCurrentMenu([
+        getItem(renderLink('/user', 'Nhân Viên'), '/user', <IdcardOutlined />),
         getItem(
-          renderLink('/user', 'Quản lý user'),
-          '/user',
-          <IdcardOutlined />,
-        ),
-        getItem(
-          renderLink('/department', 'Quản lý phòng ban'),
+          renderLink('/department', 'Phòng Ban'),
           '/department',
           <IdcardOutlined />,
         ),
         getItem(
-          renderLink('/position', 'Quản lý vị trí'),
+          renderLink('/position', 'Các Chức Vụ'),
           '/position',
           <IdcardOutlined />,
         ),
         getItem(
-          renderLink('/policy', 'Quản lý điều khoản'),
+          renderLink('/policy', 'Chính Sách'),
           '/policy',
           <IdcardOutlined />,
         ),
 
-        getItem(
-          renderLink('/NewUser', 'Danh sách tin tức'),
-          '/NewUser',
-          <IdcardOutlined />,
-        ),
+        // getItem(
+        //   renderLink('/NewUser', 'Danh sách tin tức'),
+        //   '/NewUser',
+        //   <IdcardOutlined />,
+        // ),
       ]);
     }
     if (authObj.role === 'STAFF') {
       setCurrentMenu([
         getItem(
-          renderLink('/checkin', 'Checkin'),
+          renderLink('/checkin', 'Chấm Công'),
           '/checkin',
           <IdcardOutlined />,
         ),
         getItem(
-          renderLink('/user-user', 'Danh sách nhân viên'),
+          renderLink('/user-user', 'Danh Sách Nhân Viên'),
           '/user-user',
           <IdcardOutlined />,
         ),
@@ -130,35 +126,35 @@ const Sidebar = ({
     if (authObj.role === 'EDITER') {
       setCurrentMenu([
         getItem(
-          renderLink('/list-salary', 'Danh sách lương nhân viên'),
+          renderLink('/list-salary', 'Lương Nhân Viên'),
           '/list-salary',
           <IdcardOutlined />,
         ),
         getItem(
-          renderLink('/salary', 'Tính lương nhân viên'),
+          renderLink('/salary', 'Tính Lương Nhân Viên'),
           '/salary',
           <IdcardOutlined />,
         ),
         getItem(
-          renderLink('/dot_infomation', 'Danh sách'),
+          renderLink('/dot_infomation', 'Tìm Kiêm Chấm Công'),
           '/dot_infomation',
           <IdcardOutlined />,
         ),
         getItem(
-          renderLink('/new', 'Quản lý tin tức'),
+          renderLink('/new', 'Quản Lý Tin Tức'),
           '/new',
           <IdcardOutlined />,
         ),
-        getItem(
-          renderLink('/user-user', 'Danh sách nhân viên'),
-          '/user-user',
-          <IdcardOutlined />,
-        ),
-        getItem(
-          renderLink('/DepartmentUser', 'Danh sách phòng ban'),
-          '/DepartmentUser',
-          <IdcardOutlined />,
-        ),
+        // getItem(
+        //   renderLink('/user-user', 'Danh Sách Nhân Viên'),
+        //   '/user-user',
+        //   <IdcardOutlined />,
+        // ),
+        // getItem(
+        //   renderLink('/DepartmentUser', 'Danh sách phòng ban'),
+        //   '/DepartmentUser',
+        //   <IdcardOutlined />,
+        // ),
         getItem(
           <Button
             type="default"

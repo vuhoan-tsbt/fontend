@@ -52,8 +52,8 @@ const Login: React.FC = () => {
           onFinish={onFinish}
           layout="vertical"
           initialValues={{
-            phone_number: 'vuhoan485@gmail.com',
-            password: 'hoan10a8',
+            phone_number: '',
+            password: '',
           }}
         >
           <Form.Item

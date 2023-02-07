@@ -26,7 +26,6 @@ import Dialog from './Components/Dialog';
 import styles from './index.less';
 import { getTableData, switchStatusAdmin } from './service';
 
-
 interface DataType {
   key: string;
   stt: number;
@@ -102,9 +101,8 @@ export default () => {
       title: 'Lương',
       dataIndex: 'salary',
       key: 'salary',
-    }
-  ]
-
+    },
+  ];
 
   const searchForm = (
     <div className={styles.searchContainer}>
@@ -114,8 +112,8 @@ export default () => {
             placeholder={'Nhập tháng cần xem lương'}
             allowClear
             onSearch={() => {
-              submit()
-              setTableVisible(true)
+              submit();
+              setTableVisible(true);
             }}
           />
         </Form.Item>
@@ -126,13 +124,10 @@ export default () => {
   return (
     <>
       <Breadcrumb className={styles.breadcrumb}>
-        <Breadcrumb.Item>
-          Quản lý phòng ban
-        </Breadcrumb.Item>
+        <Breadcrumb.Item>Tìm kiếm Thông Tin Lương Theo Tháng</Breadcrumb.Item>
       </Breadcrumb>
       {searchForm}
-      {
-        tableVisible &&
+      {tableVisible && (
         <div className={styles.tableComponent}>
           {loading || error ? (
             <Skeleton active />
@@ -145,7 +140,7 @@ export default () => {
             />
           )}
         </div>
-      }
+      )}
       {openDialog && (
         <Dialog
           open={openDialog}

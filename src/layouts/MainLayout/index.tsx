@@ -20,7 +20,7 @@ const App = ({ children }: any) => {
 
   const findTitle = () => {
     const result = authRoutes.find((r) => r.path === location.pathname);
-    return result?.title || 'Locamos CMS';
+    return result?.title || 'CRM - D13CNPM7';
   };
 
   return (
