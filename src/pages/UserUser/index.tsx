@@ -125,25 +125,18 @@ export default () => {
       dataIndex: 'position',
       key: 'position',
     },
-  ]
-
+  ];
 
   const searchForm = (
     <div className={styles.searchContainer}>
-      <Form form={form} className={styles.searchForm}>
-
-
-      </Form>
-
+      <Form form={form} className={styles.searchForm}></Form>
     </div>
   );
 
   return (
     <>
       <Breadcrumb className={styles.breadcrumb}>
-        <Breadcrumb.Item>
-          Quản lý nhân viên
-        </Breadcrumb.Item>
+        <Breadcrumb.Item>Thông Tin Nhân Viên Công Ty</Breadcrumb.Item>
       </Breadcrumb>
       {searchForm}
       <div className={styles.tableComponent}>

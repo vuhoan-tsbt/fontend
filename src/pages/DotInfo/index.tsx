@@ -24,6 +24,7 @@ interface DataType {
   email: string;
   dateOfBirth: string;
   status: string;
+  workingTime: number;
 }
 export default () => {
   const [openDialog, setOpenDialog] = useToggle(false);
@@ -83,6 +84,12 @@ export default () => {
       render: (_: any, record: any) => {
         return moment(record.timeout).format('YYYY/MM/DD HH:mm:ss');
       },
+    },
+    {
+      title: 'Số giờ làm việc',
+      dataIndex: 'workingTime',
+      key: 'workingTime',
+      align: 'center',
     },
   ];
 

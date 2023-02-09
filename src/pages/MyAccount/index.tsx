@@ -3,13 +3,7 @@ import { ENVIRONMENTS } from '@/utils/constant';
 import { useTranslate } from '@/utils/hooks/useTranslate';
 import { LeftOutlined } from '@ant-design/icons';
 import { useRequest, useToggle } from 'ahooks';
-import {
-  Breadcrumb,
-  Button,
-  Col,
-  Form,
-  Row
-} from 'antd';
+import { Breadcrumb, Button, Col, Form, Row } from 'antd';
 import { message, Upload } from 'antd';
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
@@ -21,14 +15,13 @@ import styles from './index.less';
 import { getMyProfile, onSubmitValue } from './service';
 
 export default () => {
-
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [avatarLink, setAvatarLink] = React.useState<any>(null);
-  const [myProfile, setMyProfile] = useState(null)
+  const [myProfile, setMyProfile] = useState(null);
   useRequest(getMyProfile, {
     onSuccess(data: any) {
-      setMyProfile(data.payload)
+      setMyProfile(data.payload);
       setFileList([
         {
           uid: '-1',
@@ -36,10 +29,9 @@ export default () => {
           status: 'done',
           url: data.payload.avatar,
         },
-      ])
+      ]);
     },
   });
-
 
   const onPreview = async (file: UploadFile) => {
     let src = file.url as string;
@@ -72,12 +64,11 @@ export default () => {
       if (data.errors) {
         message.error('Tạo tài khoản thất bại');
       } else {
-        history.push('/user');
-        message.success('Tạo tài khoản thành công');
+        history.push('/account');
+        message.success('Cập nhật thông tin thành công');
       }
     },
   });
-
 
   const { t } = useTranslate();
   const [openDialog, setOpenDialog] = useToggle(false);
@@ -91,11 +82,11 @@ export default () => {
   const onFinish = (values: any) => {
     const data = {
       ...values,
-      avatar: avatarLink
+      avatar: avatarLink,
     };
     requestCreateUser.run(data);
   };
-  const onFinishFailed = (errorInfo: any) => { };
+  const onFinishFailed = (errorInfo: any) => {};
 
   return (
     <>
@@ -105,8 +96,8 @@ export default () => {
         </Breadcrumb.Item>
       </Breadcrumb>
       <div className={styles.tableComponent}>
-        {
-          !!myProfile && <Form
+        {!!myProfile && (
+          <Form
             name="basic"
             className={styles.itemForm}
             labelCol={{ span: 8 }}
@@ -171,8 +162,7 @@ export default () => {
               </Col>
             </Row>
           </Form>
-        }
-
+        )}
       </div>
 
       {openDialog && (
