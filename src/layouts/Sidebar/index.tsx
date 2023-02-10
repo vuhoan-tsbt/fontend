@@ -145,11 +145,11 @@ const Sidebar = ({
           '/new',
           <IdcardOutlined />,
         ),
-        // getItem(
-        //   renderLink('/user-user', 'Danh Sách Nhân Viên'),
-        //   '/user-user',
-        //   <IdcardOutlined />,
-        // ),
+        getItem(
+          renderLink('/keeping-day', 'Chấm Công Theo Ngày'),
+          '/keeping-day',
+          <IdcardOutlined />,
+        ),
         // getItem(
         //   renderLink('/DepartmentUser', 'Danh sách phòng ban'),
         //   '/DepartmentUser',

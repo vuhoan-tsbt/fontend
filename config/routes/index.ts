@@ -177,9 +177,9 @@ export const authRoutes = [
   },
   {
     exact: true,
-    path: '/user-user',
-    component: '@/pages/UserUser/index',
-    title: 'Danh sách nhân viên',
+    path: '/keeping-day',
+    component: '@/pages/KepingStaffDay/index',
+    title: 'DS Chấm Công Theo Ngày',
     routes: [],
     wrappers: ['@/layouts/Wrapper'],
   },
@@ -219,7 +219,11 @@ export default [
     title: 'Login',
     wrappers: ['@/layouts/Wrapper'],
     routes: [
-      { exact: true, path: '/reset-pass/:email/:token', component: '@/pages/ResetPass/index' },
+      {
+        exact: true,
+        path: '/reset-pass/:email/:token',
+        component: '@/pages/ResetPass/index',
+      },
     ],
   },
   {

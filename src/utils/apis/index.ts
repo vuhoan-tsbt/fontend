@@ -189,7 +189,7 @@ const API_PATH = {
   get_keeping: '/api/timekeeping/get-keeping',
 
   salary: '/api/dot/salary',
-
+  keepingDay: '/api/dot/keeping-day',
   checkin: '/api/timekeeping/entry',
   checkout: '/api/timekeeping/out',
 

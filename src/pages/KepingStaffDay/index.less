@@ -1,0 +1,65 @@
+@desktop: ~'(min-width: 960px) ';
+@tablet: ~'only screen and (min-width: 720px) and (max-width: 959px)';
+@mobile: ~'only screen and (min-width: 0px) and (max-width: 719px)';
+
+.antImageMask {
+  border-radius: 100%;
+}
+
+.searchForm {
+  display: flex;
+  justify-content: flex-start;
+
+  @media @tablet, @mobile {
+    flex-direction: column;
+  }
+}
+
+.searchContainer {
+  padding: 0px 24px;
+  display: flex;
+  justify-content: space-between;
+
+  @media @tablet, @mobile {
+    flex-direction: column;
+  }
+}
+
+.searchItem {
+  @media @desktop {
+    margin-right: 16px !important;
+    width: 320px;
+  }
+
+  @media @tablet, @mobile {
+    margin-bottom: 16px !important;
+  }
+}
+
+.tableComponent {
+  padding: 24px;
+  min-height: 240px;
+}
+
+.breadcrumb {
+  margin: 16px 0;
+}
+
+.addGroupButton {
+  text-align: center;
+  padding-top: 24px;
+}
+
+.addButton {
+  margin-right: 16px !important;
+}
+
+.dialogFormItem {
+  margin: 8px 0;
+}
+
+.activeButton {
+  display: flex;
+  justify-content: center;
+  column-gap: 8px;
+}
